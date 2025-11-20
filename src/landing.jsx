@@ -26,7 +26,7 @@ export default function WebNexumLanding() {
         console.log(form);
         setSending(true);
         try {
-            const botToken = process.env.BOT_TOKEN;
+            const botToken = import.meta.env.VITE_BOT_TOKEN;
             const chatId = '6430506427';
             const message = `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nProject type: ${form.projectType}\nMessage: ${form.message}`;
 
@@ -48,17 +48,6 @@ export default function WebNexumLanding() {
         }
         setSending(false);
     }
-
-    // async function handleSubmit(e) {
-    //     e.preventDefault();
-    //     setSending(true);
-    //     // Simulate submit — replace with real API call
-    //     await new Promise((r) => setTimeout(r, 800));
-    //     console.log("Send lead", form);
-    //     setSending(false);
-    //
-    //
-    // }
 
     return (
         <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
