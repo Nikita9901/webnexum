@@ -26,7 +26,7 @@ export default function WebNexumLanding() {
         console.log(form);
         setSending(true);
         try {
-            const botToken = '8580455686:AAHGyGpmmM_cMf7YbMsjK_EX5BcOXLgfl0g';
+            const botToken = process.env.BOT_TOKEN;
             const chatId = '6430506427';
             const message = `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nProject type: ${form.projectType}\nMessage: ${form.message}`;
 
