@@ -8,6 +8,8 @@ import logo from "./assets/fulllogo.png";
 export default function WebNexumLanding() {
     const [form, setForm] = useState({ name: "", email: "", phone: "", projectType: "website", message: "" });
     const [sending, setSending] = useState(false);
+
+
     const portfolio = [
         { id: 1, title: "B2B Portal — AtlasCorp", tags: ["React", "Node.js"], desc: "Корпоративный портал для управления клиентами и сводной аналитики.", img: null },
         { id: 2, title: "E‑commerce — BloomShop", tags: ["Next.js", "Stripe"], desc: "Интернет-магазин с кастомной админкой и интеграцией платежей.", img: null },
@@ -19,16 +21,44 @@ export default function WebNexumLanding() {
         setForm((p) => ({ ...p, [name]: value }));
     }
 
-    async function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(form);
         setSending(true);
-        // Simulate submit — replace with real API call
-        await new Promise((r) => setTimeout(r, 800));
-        console.log("Send lead", form);
+        try {
+            const botToken = '8580455686:AAHGyGpmmM_cMf7YbMsjK_EX5BcOXLgfl0g';
+            const chatId = '6430506427';
+            const message = `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nProject type: ${form.projectType}\nMessage: ${form.message}`;
+
+            const res = await fetch(
+                `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(
+                    message
+                )}`
+            );
+            if (res.ok) {
+                setSending(false);
+                alert("Заявка отправлена — спасибо! Мы свяжемся в ближайшее время.");
+                setForm({ name: "", email: "", phone: "", projectType: "website", message: "" });
+            }
+            else {
+                throw new Error('Failed to send message to Telegram');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
         setSending(false);
-        alert("Заявка отправлена — спасибо! Мы свяжемся в ближайшее время.");
-        setForm({ name: "", email: "", phone: "", projectType: "website", message: "" });
     }
+
+    // async function handleSubmit(e) {
+    //     e.preventDefault();
+    //     setSending(true);
+    //     // Simulate submit — replace with real API call
+    //     await new Promise((r) => setTimeout(r, 800));
+    //     console.log("Send lead", form);
+    //     setSending(false);
+    //
+    //
+    // }
 
     return (
         <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
@@ -58,7 +88,7 @@ export default function WebNexumLanding() {
                         <a href="#services" className="hover:text-[var(--text)]">Услуги</a>
                         <a href="#portfolio" className="hover:text-[var(--text)]">Портфолио</a>
                         <a href="#about" className="hover:text-[var(--text)]">О нас</a>
-                        <a href="#contact" className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-95">Оставить заявку</a>
+                        <a href="#contact" className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-110">Оставить заявку</a>
                     </nav>
                 </div>
             </header>
@@ -71,7 +101,7 @@ export default function WebNexumLanding() {
                         <p className="mt-4 text-lg text-[var(--muted)] max-w-prose">Разрабатываем сайты, веб‑приложения и кастомное ПО — от идеи до поддержки. Быстро, прозрачно, с упором на бизнес‑результат.</p>
 
                         <div className="mt-6 flex gap-4">
-                            <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent)] text-white rounded-md shadow hover:brightness-95">Оставить заявку</a>
+                            <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent)] text-white rounded-md shadow hover:brightness-110">Оставить заявку</a>
                             <a href="#portfolio" className="inline-flex items-center gap-2 px-6 py-3 border rounded-md text-[var(--text)]">Посмотреть портфолио</a>
                         </div>
 
@@ -108,7 +138,7 @@ export default function WebNexumLanding() {
                                     <div className="text-sm text-[var(--muted)]">Быстрый контакт</div>
                                     <div className="font-semibold text-[var(--text)]">Готовы обсудить проект? Оставьте заявку — мы ответим в течение рабочего дня.</div>
                                 </div>
-                                <a href="#contact" className="px-5 py-3 bg-[var(--accent-2)] text-white rounded-md">Оставить заявку</a>
+                                <a href="#contact" className="px-5 py-3 bg-[var(--accent-2)] text-white rounded-md hover:brightness-110">Оставить заявку</a>
                             </div>
                         </div>
 
@@ -166,7 +196,7 @@ export default function WebNexumLanding() {
                     <div>
                         <h2 className="text-2xl font-semibold">Почему выбирают нас</h2>
                         <ul className="mt-6 space-y-4 text-[var(--muted)]">
-                            <li>— Команда senior/mid разработчиков с опытом реализации enterprise задач.</li>
+                            <li>— Команда senior/middle разработчиков с опытом реализации enterprise задач.</li>
                             <li>— Прозрачные процессы и гибкий подход (Agile).</li>
                             <li>— Поддержка и сопровождение после релиза.</li>
                         </ul>
@@ -175,8 +205,8 @@ export default function WebNexumLanding() {
                         <h3 className="font-semibold">О нас</h3>
                         <p className="mt-3 text-[var(--muted)]">WebNexum — небольшая, но опытная студия разработки. Мы работаем с компаниями, которые ценят скорость, качество и результат. С нами проще запускать цифровые продукты.</p>
                         <div className="mt-4 flex gap-3">
-                            <a href="#contact" className="px-4 py-2 rounded bg-[var(--accent)] text-white">Связаться</a>
-                            <a href="#portfolio" className="px-4 py-2 rounded border">Кейсы</a>
+                            <a href="#contact" className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-110">Связаться</a>
+                            <a href="#portfolio" className="px-4 py-2 rounded border hover:brightness-75">Кейсы</a>
                         </div>
                     </div>
                 </section>
@@ -190,8 +220,8 @@ export default function WebNexumLanding() {
                                 <p className="mt-2 text-[var(--muted)]">Оставьте заявку — опишем шаги и предварительную оценку.</p>
 
                                 <div className="mt-6 space-y-4 text-sm text-[var(--muted)]">
-                                    <div><strong>Email:</strong> hello@webnexum.com</div>
-                                    <div><strong>Телефон:</strong> +7 900 000 00 00</div>
+                                    <div><strong>Email:</strong> support@webnexum.com</div>
+                                    <div><strong>Telegram:</strong> @webnexum</div>
                                     <div><strong>Адрес:</strong> Remote / Минск</div>
                                 </div>
                             </div>
@@ -204,7 +234,7 @@ export default function WebNexumLanding() {
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <input name="phone" value={form.phone} onChange={handleChange} placeholder="Телефон" className="w-full px-4 py-3 rounded border" />
                                     <select name="projectType" value={form.projectType} onChange={handleChange} className="w-full px-4 py-3 rounded border">
-                                        <option value="website">Сайт</option>
+                                        <option value="website">Сайт-лендинг</option>
                                         <option value="webapp">Веб-приложение</option>
                                         <option value="software">ПО под ключ</option>
                                         <option value="other">Другое</option>
@@ -212,7 +242,7 @@ export default function WebNexumLanding() {
                                 </div>
                                 <textarea name="message" value={form.message} onChange={handleChange} placeholder="Коротко о задаче" rows={4} className="w-full px-4 py-3 rounded border" />
                                 <div className="flex items-center gap-4">
-                                    <button type="submit" disabled={sending} className="px-6 py-3 bg-[var(--accent)] text-white rounded-md">{sending? 'Отправка...' : 'Отправить заявку'}</button>
+                                    <button type="submit" disabled={sending} className="px-6 py-3 bg-[var(--accent)] text-white rounded-md hover:brightness-110">{sending? 'Отправка...' : 'Отправить заявку'}</button>
                                     <div className="text-sm text-[var(--muted)]">Мы ответим в рабочее время в течение 1 дня.</div>
                                 </div>
                             </form>
