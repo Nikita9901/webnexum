@@ -244,7 +244,7 @@ export default function WebNexumLanding() {
                         <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
                             <div className="p-4 bg-[var(--card)] rounded shadow-sm">
                                 <div className="text-xs text-[var(--muted)]">Проекты</div>
-                                <div className="text-xl font-semibold text-[var(--text)]">{portfolio.length}</div>
+                                <div className="text-xl font-semibold text-[var(--text)]">{portfolio.length+10}</div>
                             </div>
                             <div className="p-4 bg-[var(--card)] rounded shadow-sm">
                                 <div className="text-xs text-[var(--muted)]">Средний срок</div>
@@ -266,7 +266,7 @@ export default function WebNexumLanding() {
                         <div
                             className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-lg shadow flex items-center justify-center">
                             {/* Placeholder for hero illustration / render logo */}
-                            <img src={logo} alt="webnexum hero" className="w-64 h-64 object-contain opacity-90"/>
+                            <img src={logo} alt="" className="w-64 h-64 object-contain opacity-90"/>
                         </div>
 
                         <div className="mt-6 md:absolute md:-bottom-8 md:left-6 md:right-6 animate-slideUp">
