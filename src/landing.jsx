@@ -294,8 +294,8 @@ export default function WebNexumLanding() {
                                     оценку.</p>
 
                                 <div className="mt-6 space-y-4 text-sm text-[var(--muted)]">
-                                    <div><strong>Email:</strong> <a href={'mailto:webnexumcom@gmail.com'}
-                                                                    target={'_blank'}><u>webnexumcom@gmail.com</u></a></div>
+                                    <div><strong>Email:</strong> <a href={'mailto:support@webnexum.com'}
+                                                                    target={'_blank'}><u>support@webnexum.com</u></a></div>
                                     <div><strong>Telegram:</strong> <a href={'https://t.me/webnexum'}
                                                                        target={'_blank'}><u>webnexum</u></a></div>
                                     <div><strong>Адрес:</strong> Remote / Минск</div>
@@ -462,7 +462,7 @@ export default function WebNexumLanding() {
                         <div>
                             <h4 className="font-semibold">Контакты</h4>
                             <ul className="mt-2 text-sm text-white/80 space-y-2">
-                                <li>webnexumcom@gmail.com</li>
+                                <li>support@webnexum.com</li>
                                 <li>+375 29 640-28-89</li>
                             </ul>
                         </div>
