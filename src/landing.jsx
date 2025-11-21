@@ -1,97 +1,9 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState} from "react";
 import logo from "./assets/fulllogo.png";
 import project1Img from "./assets/project1.png";
 import project2Img from "./assets/project2.png";
 import project3Img from "./assets/project3.png";
-
-
-function CustomSelect({ value, onChange, options }) {
-    const [open, setOpen] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const close = e => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setOpen(false);
-            }
-        };
-        document.addEventListener("click", close);
-        return () => document.removeEventListener("click", close);
-    }, []);
-
-    const current = options.find(o => o.value === value);
-
-    return (
-        <div ref={ref} className="relative w-full">
-            <button
-                type="button"
-                onClick={() => setOpen(o => !o)}
-                className="
-                    w-full px-4 py-3 rounded-lg border
-                    bg-[var(--card)] text-[var(--text)]
-                    border-gray-300/60
-                    flex items-center justify-between
-                    hover:border-[var(--accent)]
-                    transition-all
-                "
-            >
-                {current.label}
-                <svg
-                    className={`
-                        pointer-events-none absolute right-3 top-1/2 -translate-y-1/2
-                        w-4 h-4 opacity-60
-                        transition-transform duration-300
-                        [transition-timing-function:cubic-bezier(.34,1.56,.64,1)]
-                        ${open ? "rotate-180 scale-110" : "rotate-0 scale-100"}
-                    `}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                    />
-                </svg>
-            </button>
-
-            {open && (
-                <div
-                    className="
-            absolute mt-2 w-full rounded-lg shadow-lg z-50
-            bg-[var(--card)] border border-gray-300/60
-            overflow-hidden
-
-            animate-dropdownSpring
-        "
-                >
-                    {options.map(opt => (
-                        <div
-                            key={opt.value}
-                            onClick={() => {
-                                onChange(opt.value);
-                                setOpen(false);
-                            }}
-                            className="
-                    px-4 py-3 cursor-pointer
-                    hover:bg-[var(--accent)] hover:text-white
-                    hover:opacity-70
-                    rounded-lg
-                "
-                        >
-                            {opt.label}
-                        </div>
-                    ))}
-                </div>
-            )}
-
-        </div>
-    );
-}
-
-
+import {FAQ, CustomSelect} from "./atoms.jsx";
 
 // Single-file React landing for WebNexum
 // Tailwind CSS classes are used throughout. Ensure Tailwind is available in your project.
@@ -138,7 +50,7 @@ export default function WebNexumLanding() {
             tags: ["React", "Django"],
             desc: "Подсистема управления заказами в автоматизированной логистической системе.",
             img: project3Img,
-            href: ''
+            href: undefined
         },
     ];
 
@@ -226,11 +138,20 @@ export default function WebNexumLanding() {
             <main className="mx-auto max-w-6xl px-6 py-12">
                 <section className="grid md:grid-cols-2 gap-8 items-center">
                     <div>
-                        <h1 className="absolute opacity-0">WebNexum — Сайты под ключ, разработка сайтов</h1>
-                        <h2 className="text-4xl md:text-5xl font-extrabold leading-tight text-[var(--text)]">WebNexum —
-                            цифровые решения под ключ</h2>
+                        <h1 className="absolute opacity-0">
+                            WebNexum — разработка сайтов, веб-приложений и ПО под ключ
+                        </h1>
+                        <h2 className="absolute opacity-0">
+                            Разработка сайта под ключ и веб-приложений под ключ — WebNexum
+                        </h2>
+                        <h3 className="text-4xl md:text-5xl font-extrabold leading-tight text-[var(--text)]">WebNexum —
+                            цифровые решения под ключ</h3>
                         <p className="mt-4 text-lg text-[var(--muted)] max-w-prose">Разрабатываем сайты, веб‑приложения
                             и кастомное ПО — от идеи до поддержки. Быстро, прозрачно, с упором на бизнес‑результат.</p>
+                        <p className="absolute opacity-0">
+                            заказать разработку сайта, разработка приложений React / Node.js, разработка корпоративного сайта, разработка лендингов, создание веб-приложений, разработка сайта под ключ
+                            WebNexum — веб-студия, специализирующаяся на разработке сайтов, веб-приложений (SaaS) и кастомного ПО под ключ. Мы создаём корпоративные сайты, лендинги, CRM, интерфейсы и web-панели. Работаем в Минске и по всему миру.
+                        </p>
 
                         <div className="mt-6 flex gap-4">
                             <a href="#contact"
@@ -248,7 +169,7 @@ export default function WebNexumLanding() {
                             </div>
                             <div className="p-4 bg-[var(--card)] rounded shadow-sm">
                                 <div className="text-xs text-[var(--muted)]">Средний срок</div>
-                                <div className="text-xl font-semibold text-[var(--text)]">6–12 недель</div>
+                                <div className="text-xl font-semibold text-[var(--text)]">4–5 недель</div>
                             </div>
                             <div className="p-4 bg-[var(--card)] rounded shadow-sm">
                                 <div className="text-xs text-[var(--muted)]">Поддержка</div>
@@ -265,7 +186,6 @@ export default function WebNexumLanding() {
                     <div className="relative">
                         <div
                             className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-lg shadow flex items-center justify-center">
-                            {/* Placeholder for hero illustration / render logo */}
                             <img src={logo} alt="" className="w-64 h-64 object-contain opacity-90"/>
                         </div>
 
@@ -324,7 +244,7 @@ export default function WebNexumLanding() {
                                          className="bg-[var(--card)] rounded-lg shadow hover:shadow-md overflow-hidden">
                                     <div
                                         className="h-44 bg-gradient-to-br from-[var(--bg)] to-white flex items-center justify-center">{/* image placeholder */}
-                                        <img src={p.img} alt={p.title}/>
+                                        <img src={p.img} alt={p.title} loading="lazy"/>
                                     </div>
                                     <div className="p-4">
                                         <h3 className="font-semibold text-[var(--text)]">{p.title}</h3>
@@ -374,8 +294,8 @@ export default function WebNexumLanding() {
                                     оценку.</p>
 
                                 <div className="mt-6 space-y-4 text-sm text-[var(--muted)]">
-                                    <div><strong>Email:</strong> <a href={'mailto:support@webnexum.com'}
-                                                                    target={'_blank'}><u>support@webnexum.com</u></a></div>
+                                    <div><strong>Email:</strong> <a href={'mailto:webnexumcom@gmail.com'}
+                                                                    target={'_blank'}><u>webnexumcom@gmail.com</u></a></div>
                                     <div><strong>Telegram:</strong> <a href={'https://t.me/webnexum'}
                                                                        target={'_blank'}><u>webnexum</u></a></div>
                                     <div><strong>Адрес:</strong> Remote / Минск</div>
@@ -508,8 +428,13 @@ export default function WebNexumLanding() {
                         </div>
                     </div>
                 </section>
+                <section id="faq" className="mt-20">
+                    <h2 className="text-2xl font-semibold">FAQ — Частые вопросы</h2>
+                    <FAQ/>
+                </section>
 
             </main>
+
 
             {/* FOOTER */}
             <footer className="bg-[var(--text)] text-white">
@@ -537,7 +462,7 @@ export default function WebNexumLanding() {
                         <div>
                             <h4 className="font-semibold">Контакты</h4>
                             <ul className="mt-2 text-sm text-white/80 space-y-2">
-                                <li>support@webnexum.com</li>
+                                <li>webnexumcom@gmail.com</li>
                                 <li>+375 29 640-28-89</li>
                             </ul>
                         </div>
