@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import logo from "./assets/fulllogo.png";
 import project1Img from "./assets/project1.png";
 import project2Img from "./assets/project2.png";
@@ -20,12 +20,53 @@ export default function WebNexumLanding() {
     });
     const [sending, setSending] = useState(false);
     const [toast, setToast] = useState(null);
+    const [currentPortfolioIndex, setCurrentPortfolioIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
+    const [showBackToTop, setShowBackToTop] = useState(false);
+    const [selectedProject, setSelectedProject] = useState(null);
+    const carouselRef = useRef(null);
 
     function showToast(text) {
         setToast(text);
         setTimeout(() => setToast(null), 3500);
     }
 
+    // Back to top scroll handler
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowBackToTop(window.scrollY > 400);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Prevent body scroll when modal is open
+    useEffect(() => {
+        if (selectedProject) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [selectedProject]);
+
+    // Close modal on Escape key
+    useEffect(() => {
+        const handleEscape = (e) => {
+            if (e.key === 'Escape' && selectedProject) {
+                setSelectedProject(null);
+            }
+        };
+        window.addEventListener('keydown', handleEscape);
+        return () => window.removeEventListener('keydown', handleEscape);
+    }, [selectedProject]);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     const portfolio = [
         {
@@ -35,6 +76,15 @@ export default function WebNexumLanding() {
             desc: "Крипто инвесторская платформа с системой profit sharing.",
             img: project1Img,
             href: "https://zignaly.com",
+            problem: "Заказчик столкнулся с необходимостью создания масштабируемой платформы для криптоинвестиций с автоматическим распределением прибыли между инвесторами и трейдерами. Существующее решение не справлялось с нагрузкой и не имело необходимой функциональности.",
+            whatWeDid: [
+                "Разработали архитектуру микросервисов для обеспечения масштабируемости",
+                "Реализовали систему автоматического profit sharing с поддержкой множественных стратегий",
+                "Создали админ-панель для управления пользователями и стратегиями",
+                "Интегрировали API криптобирж для автоматической торговли",
+                "Внедрили систему уведомлений и аналитики в реальном времени",
+                "Оптимизировали производительность базы данных для обработки больших объемов транзакций"
+            ]
         },
         {
             id: 2,
@@ -42,7 +92,16 @@ export default function WebNexumLanding() {
             tags: ["Next.js", "Express.js"],
             desc: "Одностраничный лэндинг для ознакомления с игрой Vendetta City.",
             img: project2Img,
-            href: "https://vendettacity.org"
+            href: "https://vendettacity.org",
+            problem: "Необходимо было создать привлекательный лэндинг для новой игры, который бы эффективно конвертировал посетителей в игроков. Требовалось показать уникальные особенности игры и создать атмосферу, соответствующую игровому миру.",
+            whatWeDid: [
+                "Разработали современный одностраничный лэндинг с анимациями и интерактивными элементами",
+                "Реализовали адаптивный дизайн для всех устройств",
+                "Интегрировали систему регистрации и авторизации",
+                "Создали секции с геймплейными видео и скриншотами",
+                "Добавили систему предзаказа с интеграцией платежных систем",
+                "Оптимизировали производительность для быстрой загрузки"
+            ]
         },
         {
             id: 3,
@@ -50,9 +109,44 @@ export default function WebNexumLanding() {
             tags: ["React", "Django"],
             desc: "Подсистема управления заказами в автоматизированной логистической системе.",
             img: project3Img,
-            href: undefined
+            href: undefined,
+            problem: "Логистическая компания нуждалась в автоматизации процесса управления заказами. Ручная обработка заказов приводила к ошибкам, задержкам и неэффективному использованию ресурсов. Требовалась система для отслеживания заказов от создания до доставки.",
+            whatWeDid: [
+                "Разработали полнофункциональную систему управления заказами",
+                "Реализовали автоматическое распределение заказов по складам и курьерам",
+                "Создали систему отслеживания статусов заказов в реальном времени",
+                "Интегрировали API транспортных компаний для автоматического создания накладных",
+                "Внедрили систему уведомлений для клиентов и сотрудников",
+                "Разработали аналитическую панель для оптимизации логистических процессов"
+            ]
         },
     ];
+
+    // Touch handlers for swipe
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            setCurrentPortfolioIndex((prev) => (prev === portfolio.length - 1 ? 0 : prev + 1));
+        }
+        if (isRightSwipe) {
+            setCurrentPortfolioIndex((prev) => (prev === 0 ? portfolio.length - 1 : prev - 1));
+        }
+    };
 
     function handleChange(e) {
         const {name, value} = e.target;
@@ -125,6 +219,7 @@ export default function WebNexumLanding() {
                     </div>
                     <nav className="hidden md:flex gap-8 items-center text-sm font-medium text-[var(--muted)]">
                         <a href="#services" className="hover:text-[var(--text)]">Услуги</a>
+                        <a href="#process" className="hover:text-[var(--text)]">Процесс</a>
                         <a href="#portfolio" className="hover:text-[var(--text)]">Портфолио</a>
                         <a href="#about" className="hover:text-[var(--text)]">О нас</a>
                         <a href="#contact"
@@ -232,32 +327,177 @@ export default function WebNexumLanding() {
                     </div>
                 </section>
 
+                {/* PROCESS / HOW WE WORK */}
+                <section id="process" className="mt-20">
+                    <h2 className="text-2xl font-semibold">Как мы работаем</h2>
+                    <p className="text-[var(--muted)] mt-2 max-w-prose">Прозрачный процесс разработки от первого контакта до запуска проекта.</p>
+
+                    <div className="mt-6 relative">
+                        {/* Timeline line for desktop */}
+                        <div className="hidden md:block absolute left-6 top-0 bottom-12 w-0.5 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]"></div>
+
+                        <div className="space-y-4 md:space-y-6">
+                            {[
+                                {
+                                    step: "01",
+                                    title: "Обсуждение и анализ",
+                                    desc: "Изучаем требования, цели проекта и целевую аудиторию. Формируем техническое задание.",
+                                    icon: "💬"
+                                },
+                                {
+                                    step: "02",
+                                    title: "Прототипирование и дизайн",
+                                    desc: "Создаём wireframes и дизайн-макеты с учётом UX/UI best practices. Согласовываем каждый этап.",
+                                    icon: "🎨"
+                                },
+                                {
+                                    step: "03",
+                                    title: "Разработка",
+                                    desc: "Пишем чистый, масштабируемый код. Работаем по Agile методологии с регулярными демо.",
+                                    icon: "⚙️"
+                                },
+                                {
+                                    step: "04",
+                                    title: "Тестирование и запуск",
+                                    desc: "Проводим комплексное тестирование. Готовим к деплою и запускаем проект.",
+                                    icon: "🚀"
+                                },
+                                {
+                                    step: "05",
+                                    title: "Поддержка и развитие",
+                                    desc: "Обеспечиваем техническую поддержку и дальнейшее развитие проекта.",
+                                    icon: "🔧"
+                                }
+                            ].map((item, index) => (
+                                <div key={index} className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6">
+                                    {/* Step number circle */}
+                                    <div className="flex-shrink-0 relative z-10 flex items-center sm:items-start">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] flex items-center justify-center shadow-md">
+                                            <span className="text-white font-bold text-xs sm:text-sm md:text-base">{item.step}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Content */}
+                                    <div className="flex-1 sm:pt-0.5">
+                                        <div className="bg-[var(--card)] rounded-lg shadow-sm p-4 md:p-5 hover:shadow-md transition-shadow">
+                                            <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+                                                <div className="text-xl sm:text-2xl md:text-3xl flex-shrink-0">{item.icon}</div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-base sm:text-lg md:text-xl font-semibold text-[var(--text)] mb-1 sm:mb-1.5">
+                                                        {item.title}
+                                                    </h3>
+                                                    <p className="text-sm md:text-base text-[var(--muted)] leading-relaxed">
+                                                        {item.desc}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
                 {/* PORTFOLIO */}
                 <section id="portfolio" className="mt-20">
                     <h2 className="text-2xl font-semibold">Портфолио</h2>
                     <p className="text-[var(--muted)] mt-2">Примеры проектов — кликайте для деталей.</p>
 
-                    <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {portfolio.map((p) => (
-                            <a href={p.href} target={"_blank"}>
-                                <article key={p.id}
-                                         className="bg-[var(--card)] rounded-lg shadow hover:shadow-md overflow-hidden">
-                                    <div
-                                        className="h-44 bg-gradient-to-br from-[var(--bg)] to-white flex items-center justify-center">{/* image placeholder */}
-                                        <img src={p.img} alt={p.title} loading="lazy"/>
+                    <div className="mt-6 relative">
+                        <div className="flex justify-center">
+                            {/* Carousel Container */}
+                            <div 
+                                ref={carouselRef}
+                                className="relative rounded-lg max-w-2xl w-full shadow-xl"
+                                onTouchStart={onTouchStart}
+                                onTouchMove={onTouchMove}
+                                onTouchEnd={onTouchEnd}
+                            >
+                                <div 
+                                    className="overflow-hidden rounded-lg shadow-lg"
+                                >
+                                    <div 
+                                        className="flex transition-transform duration-500 ease-in-out"
+                                        style={{ transform: `translateX(-${currentPortfolioIndex * 100}%)` }}
+                                    >
+                                        {portfolio.map((p) => (
+                                            <div key={p.id} className="min-w-full flex-shrink-0 w-full flex">
+                                                <article 
+                                                    onClick={() => setSelectedProject(p)}
+                                                    className="bg-[var(--card)] rounded-lg shadow hover:shadow-md overflow-hidden cursor-pointer transition-all w-full flex flex-col"
+                                                >
+                                                    <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white overflow-hidden">
+                                                        <img src={p.img} alt={p.title} loading="lazy" className="w-full h-full object-cover"/>
+                                                    </div>
+                                                    <div className="p-4 sm:p-6 flex-1 flex flex-col">
+                                                        <div className="flex items-start justify-between gap-2">
+                                                            <h3 className="font-semibold text-lg sm:text-xl text-[var(--text)]">{p.title}</h3>
+                                                            {/* {p.href && (
+                                                                <a 
+                                                                    href={p.href} 
+                                                                    target="_blank" 
+                                                                    rel="noopener noreferrer"
+                                                                    onClick={(e) => e.stopPropagation()}
+                                                                    className="text-[var(--accent)] hover:underline text-sm flex-shrink-0"
+                                                                >
+                                                                    Открыть →
+                                                                </a>
+                                                            )} */}
+                                                        </div>
+                                                        <p className="mt-2 text-sm sm:text-base text-[var(--muted)]">{p.desc}</p>
+                                                        <div className="mt-3 sm:mt-4 flex flex-wrap gap-2">
+                                                            {p.tags.map((t) => (
+                                                                <span key={t} className="px-2 sm:px-3 py-1 bg-[var(--bg)] rounded text-xs sm:text-sm text-[var(--muted)]">{t}</span>
+                                                            ))}
+                                                        </div>
+                                                        <div className="mt-auto pt-4 text-sm text-[var(--accent)] font-medium">
+                                                            Подробнее →
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <div className="p-4">
-                                        <h3 className="font-semibold text-[var(--text)]">{p.title}</h3>
-                                        <p className="mt-2 text-sm text-[var(--muted)]">{p.desc}</p>
-                                        <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
-                                            {p.tags.map((t) => (
-                                                <span key={t} className="px-2 py-1 bg-[var(--bg)] rounded">{t}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </article>
-                            </a>
-                        ))}
+                                </div>
+
+                                {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
+                                <button
+                                    onClick={() => setCurrentPortfolioIndex((prev) => (prev === 0 ? portfolio.length - 1 : prev - 1))}
+                                    className="hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[var(--accent)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
+                                    aria-label="Previous project"
+                                >
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <button
+                                    onClick={() => setCurrentPortfolioIndex((prev) => (prev === portfolio.length - 1 ? 0 : prev + 1))}
+                                    className="hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-[var(--accent)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
+                                    aria-label="Next project"
+                                >
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Dot Indicators */}
+                        <div className="flex justify-center gap-2 mt-4 sm:mt-6">
+                            {portfolio.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentPortfolioIndex(index)}
+                                    className={`h-2 rounded-full transition-all ${
+                                        index === currentPortfolioIndex 
+                                            ? 'w-8 bg-[var(--accent)]' 
+                                            : 'w-2 bg-[var(--muted)] opacity-50 hover:opacity-75'
+                                    }`}
+                                    aria-label={`Go to project ${index + 1}`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </section>
 
@@ -455,6 +695,7 @@ export default function WebNexumLanding() {
                             <h4 className="font-semibold">Навигация</h4>
                             <ul className="mt-2 text-sm text-white/80 space-y-2">
                                 <li><a href="#services">Услуги</a></li>
+                                <li><a href="#process">Процесс</a></li>
                                 <li><a href="#portfolio">Портфолио</a></li>
                                 <li><a href="#contact">Контакты</a></li>
                             </ul>
@@ -469,6 +710,117 @@ export default function WebNexumLanding() {
                     </div>
                 </div>
             </footer>
+
+            {/* Project Detail Modal */}
+            {selectedProject && (
+                <div 
+                    className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                    onClick={() => setSelectedProject(null)}
+                >
+                    <div 
+                        className="bg-[var(--card)] rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setSelectedProject(null)}
+                            className="absolute top-4 right-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all hover:scale-110"
+                            aria-label="Закрыть"
+                        >
+                            <svg className="w-6 h-6 text-[var(--text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        {/* Project Image */}
+                        <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white flex items-center justify-center overflow-hidden">
+                            <img 
+                                src={selectedProject.img} 
+                                alt={selectedProject.title} 
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+
+                        {/* Project Content */}
+                        <div className="p-6 md:p-8">
+                            {/* Header */}
+                            <div className="mb-6">
+                                <h2 className="text-2xl md:text-3xl font-bold text-[var(--text)] mb-2">
+                                    {selectedProject.title}
+                                </h2>
+                                <p className="text-lg text-[var(--muted)]">
+                                    {selectedProject.desc}
+                                </p>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {selectedProject.tags.map((tag) => (
+                                        <span 
+                                            key={tag} 
+                                            className="px-3 py-1 bg-[var(--bg)] rounded-full text-sm text-[var(--muted)]"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                                {/* {selectedProject.href && (
+                                    <a 
+                                        href={selectedProject.href} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[var(--accent)] text-white rounded-md hover:brightness-110 transition"
+                                    >
+                                        Открыть проект
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                        </svg>
+                                    </a>
+                                )} */}
+                            </div>
+
+                            {/* Problem Section */}
+                            <div className="mb-6 pb-6 border-b border-[var(--bg)]">
+                                <h3 className="text-xl font-semibold text-[var(--text)] mb-3 flex items-center gap-2">
+                                    <span className="text-[var(--accent)]">📋</span>
+                                    Проблема заказчика
+                                </h3>
+                                <p className="text-[var(--muted)] leading-relaxed">
+                                    {selectedProject.problem}
+                                </p>
+                            </div>
+
+                            {/* What We Did Section */}
+                            <div>
+                                <h3 className="text-xl font-semibold text-[var(--text)] mb-4 flex items-center gap-2">
+                                    <span className="text-[var(--accent)]">⚙️</span>
+                                    Что мы сделали
+                                </h3>
+                                <ul className="space-y-3">
+                                    {selectedProject.whatWeDid.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-3">
+                                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center text-xs font-bold mt-0.5">
+                                                {index + 1}
+                                            </span>
+                                            <span className="text-[var(--muted)] leading-relaxed">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Back to Top Button */}
+            {showBackToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 bg-[var(--accent)] hover:bg-[var(--accent-2)] text-white rounded-full p-3 md:p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
+                    aria-label="Вернуться наверх"
+                >
+                    <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                </button>
+            )}
         </div>
     );
 }
