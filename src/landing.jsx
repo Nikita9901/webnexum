@@ -16,7 +16,8 @@ export default function WebNexumLanding() {
         phone: "",
         projectType: "website",
         message: "",
-        connect: 'telegram'
+        connect: 'telegram',
+        viber: ''
     });
     const [sending, setSending] = useState(false);
     const [toast, setToast] = useState(null);
@@ -279,8 +280,10 @@ export default function WebNexumLanding() {
     function handleChange(e) {
         const {name, value} = e.target;
         const phoneRegex = /^[+\d\s\-()]*$/;
-        if (name === "phone") {
+
+        if (name === "phone" || name === "viber") {
             if (phoneRegex.test(value)) {
+                console.log(name, value)
                 setForm((p) => ({...p, [name]: value}));
             }
         } else {
@@ -294,7 +297,7 @@ export default function WebNexumLanding() {
         try {
             const botToken = import.meta.env.VITE_BOT_TOKEN;
             const chatId = '6430506427';
-            const message = `Имя: ${form.name}\nСпособ связи: ${form.connect}\n${form.connect === 'phone' ? "Телефон" : form.connect === 'email' ? 'Почта' : 'Телеграм'}: ${form[form.connect]}\nТелефон: ${form.phone}\nТип проекта: ${form.projectType}\nКомментарий: ${form.message}`;
+            const message = `Имя: ${form.name}\nСпособ связи: ${form.connect}\n${form.connect === 'phone' ? "Телефон" : form.connect === 'email' ? 'Почта' : form.connect === 'viber' ? 'Вайбер' : 'Телеграм'}: ${form[form.connect]}\nТип проекта: ${form.projectType}\nКомментарий: ${form.message}`;
 
             const res = await fetch(
                 `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(
@@ -304,7 +307,7 @@ export default function WebNexumLanding() {
             if (res.ok) {
                 setSending(false);
                 showToast("Заявка отправлена — спасибо! Мы ответим в ближайшее время.");
-                setForm({name: "", email: "", phone: "", projectType: "website", message: "", connect: 'telegram', telegram: ''});
+                setForm({name: "", email: "", phone: "", projectType: "website", message: "", connect: 'telegram', telegram: '', viber: ''});
             } else {
                 throw new Error('Failed to send message to Telegram');
             }
@@ -696,12 +699,13 @@ export default function WebNexumLanding() {
                                         {[
                                             {value: "telegram", label: "Telegram"},
                                             {value: "phone", label: "Звонок"},
-                                            {value: "email", label: "Почта"}
+                                            {value: "email", label: "Почта"},
+                                            {value: "viber", label: "Viber"},
                                         ].map((opt) => (
                                             <label
                                                 key={opt.value}
                                                 className={`
-                                                    flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition
+                                                    flex items-center gap-3 px-3 py-3 rounded-xl border cursor-pointer transition
                                                     bg-[var(--card)] hover:bg-[var(--card-hover)]
                                                     shadow-sm
                                                     ${form.connect === opt.value ? "border-[var(--accent)] shadow-md" : "border-gray-300/60"}
@@ -736,11 +740,12 @@ export default function WebNexumLanding() {
                                 </div>
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <input
+                                        required
                                         name={form.connect}
                                         value={form[form.connect]}
                                         onChange={handleChange}
-                                        type={form.connect === 'phone' ? "tel" : form.connect === 'email' ? 'email' : 'text'}
-                                        placeholder={form.connect === 'phone' ? "Телефон" : form.connect === 'email' ? 'Email' : 'Telegram'}
+                                        type={form.connect === 'phone' || form.connect === 'viber' ? "tel" : form.connect === 'email' ? 'email' : 'text'}
+                                        placeholder={form.connect === 'phone' ? "Телефон" : form.connect === 'email' ? 'Email' : form.connect === 'viber' ? 'Телефон' : 'Telegram'}
                                         className="w-full px-4 py-3 rounded border"/>
                                     <div className="relative">
                                         <CustomSelect
