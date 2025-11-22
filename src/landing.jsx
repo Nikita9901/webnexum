@@ -26,11 +26,139 @@ export default function WebNexumLanding() {
     const [showBackToTop, setShowBackToTop] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
     const carouselRef = useRef(null);
+    const canvasRef = useRef(null);
+    const particlesRef = useRef([]);
+    const mouseRef = useRef({ x: 0, y: 0 });
+    const animationRef = useRef(null);
 
     function showToast(text) {
         setToast(text);
         setTimeout(() => setToast(null), 3500);
     }
+
+    // Particle animation effect
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        const resizeCanvas = () => {
+            canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+            canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height / window.devicePixelRatio;
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width / window.devicePixelRatio;
+                this.y = -10;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 0.05 + 0.1;
+                this.speedX = Math.random() * 0.03 - 0.15;
+                this.opacity = Math.random() * 0.2 + 0.2;
+            }
+
+            update(mouseX, mouseY) {
+                // Move towards mouse
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 50) {
+                    const force = (50 - distance) / 200;
+                    this.x += (dx / distance) * force * 3;
+                    this.y += (dy / distance) * force * 3;
+                }
+
+                // Normal movement
+                this.y += this.speedY;
+                this.x += this.speedX;
+
+                // Reset if out of bounds
+                if (this.y > canvas.height / window.devicePixelRatio + 10) {
+                    this.reset();
+                }
+                if (this.x < -10 || this.x > canvas.width / window.devicePixelRatio + 10) {
+                    this.reset();
+                }
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = `rgba(0, 153, 168, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        particlesRef.current = Array.from({ length: 60 }, () => new Particle());
+
+        // Animation loop
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particlesRef.current.forEach(particle => {
+                particle.update(mouseRef.current.x, mouseRef.current.y);
+                particle.draw(ctx);
+            });
+
+            // Draw connections
+            ctx.lineWidth = 1;
+            for (let i = 0; i < particlesRef.current.length; i++) {
+                for (let j = i + 1; j < particlesRef.current.length; j++) {
+                    const dx = particlesRef.current[i].x - particlesRef.current[j].x;
+                    const dy = particlesRef.current[i].y - particlesRef.current[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        const opacity = (1 - distance / 120) * 0.15;
+                        ctx.strokeStyle = `rgba(0, 153, 168, ${opacity})`;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesRef.current[i].x, particlesRef.current[i].y);
+                        ctx.lineTo(particlesRef.current[j].x, particlesRef.current[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            animationRef.current = requestAnimationFrame(animate);
+        };
+        animate();
+
+        return () => {
+            window.removeEventListener('resize', resizeCanvas);
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
+        };
+    }, []);
+
+    // Mouse move handler for particles
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            mouseRef.current = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     // Back to top scroll handler
     useEffect(() => {
@@ -228,11 +356,11 @@ export default function WebNexumLanding() {
                     </nav>
                 </div>
             </header>
-
             {/* HERO */}
-            <main className="mx-auto max-w-6xl px-6 py-12">
-                <section className="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
+            <main className="relative mx-auto max-w-6xl px-6 pb-12">
+                <section className="relative grid md:grid-cols-2 gap-8 items-center pt-12" style={{ overflow: 'visible'}}>
+                    {/* Particle Canvas Background - Hero Area Only, extends horizontally */}
+                    <div className="relative" style={{ zIndex: 1 }}>
                         <h1 className="absolute opacity-0">
                             WebNexum — разработка сайтов, веб-приложений и ПО под ключ
                         </h1>
@@ -243,7 +371,7 @@ export default function WebNexumLanding() {
                             цифровые решения под ключ</h3>
                         <p className="mt-4 text-lg text-[var(--muted)] max-w-prose">Разрабатываем сайты, веб‑приложения
                             и кастомное ПО — от идеи до поддержки. Быстро, прозрачно, с упором на бизнес‑результат.</p>
-                        <p className="absolute opacity-0">
+                        <p className="absolute opacity-0" style={{ display: "none" }}>
                             заказать разработку сайта, разработка приложений React / Node.js, разработка корпоративного сайта, разработка лендингов, создание веб-приложений, разработка сайта под ключ
                             WebNexum — веб-студия, специализирующаяся на разработке сайтов, веб-приложений (SaaS) и кастомного ПО под ключ. Мы создаём корпоративные сайты, лендинги, CRM, интерфейсы и web-панели. Работаем в Минске и по всему миру.
                         </p>
@@ -253,7 +381,7 @@ export default function WebNexumLanding() {
                                className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent)] text-white rounded-md shadow hover:brightness-110">Оставить
                                 заявку</a>
                             <a href="#portfolio"
-                               className="inline-flex items-center gap-2 px-6 py-3 border rounded-md text-[var(--text)]">Посмотреть
+                               className="inline-flex items-center gap-2 px-6 py-3 border rounded-md bg-[var(--bg)] text-[var(--text)]">Посмотреть
                                 портфолио</a>
                         </div>
 
@@ -278,7 +406,7 @@ export default function WebNexumLanding() {
 
                     </div>
 
-                    <div className="relative">
+                    <div className="relative" style={{ zIndex: 1 }}>
                         <div
                             className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-lg shadow flex items-center justify-center">
                             <img src={logo} alt="" className="w-64 h-64 object-contain opacity-90"/>
@@ -301,6 +429,17 @@ export default function WebNexumLanding() {
 
 
                     </div>
+                    <canvas
+                        ref={canvasRef}
+                        className="absolute w-screen h-full"
+                        style={{
+                            pointerEvents: 'none',
+                            zIndex: 0,
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            top: 0
+                        }}
+                    />
                 </section>
 
                 {/* SERVICES */}
@@ -334,7 +473,7 @@ export default function WebNexumLanding() {
 
                     <div className="mt-6 relative">
                         {/* Timeline line for desktop */}
-                        <div className="hidden md:block absolute left-6 top-0 bottom-12 w-0.5 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]"></div>
+                        <div className="hidden md:block absolute left-6 top-7 bottom-12 w-0.5 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]"></div>
 
                         <div className="space-y-4 md:space-y-6">
                             {[
@@ -371,9 +510,10 @@ export default function WebNexumLanding() {
                             ].map((item, index) => (
                                 <div key={index} className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6">
                                     {/* Step number circle */}
-                                    <div className="flex-shrink-0 relative z-10 flex items-center sm:items-start">
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] flex items-center justify-center shadow-md">
-                                            <span className="text-white font-bold text-xs sm:text-sm md:text-base">{item.step}</span>
+                                    <div className="flex-shrink-0 relative z-10 flex items-center justify-center sm:justify-start">
+                                        <div className="md:-ml-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] flex items-center justify-center shadow-md">
+
+                                        <span className="text-white font-bold text-xs sm:text-sm md:text-base">{item.step}</span>
                                         </div>
                                     </div>
                                     
@@ -677,7 +817,7 @@ export default function WebNexumLanding() {
 
 
             {/* FOOTER */}
-            <footer className="bg-[var(--text)] text-white">
+            <footer className="bg-[var(--text)] text-white" style={{ zIndex: 1 }}>
                 <div className="mx-auto max-w-6xl px-6 py-10 grid md:grid-cols-3 gap-6">
                     <div>
                         <div className="flex items-center gap-3">
