@@ -26,15 +26,33 @@ export default function WebNexumLanding() {
     const [touchEnd, setTouchEnd] = useState(null);
     const [showBackToTop, setShowBackToTop] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [visibleSections, setVisibleSections] = useState(new Set());
+    const [counters, setCounters] = useState({ projects: 0, weeks: 0, months: 0 });
     const carouselRef = useRef(null);
     const canvasRef = useRef(null);
     const particlesRef = useRef([]);
     const mouseRef = useRef({ x: 0, y: 0 });
     const animationRef = useRef(null);
+    const sectionRefs = useRef({});
 
     function showToast(text) {
         setToast(text);
         setTimeout(() => setToast(null), 3500);
+    }
+
+    function smoothScrollTo(e, targetId) {
+        e.preventDefault();
+        const element = document.getElementById(targetId);
+        if (element) {
+            const headerOffset = 80; // Высота хэдера + отступ
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
     }
 
     // Particle animation effect
@@ -53,37 +71,55 @@ export default function WebNexumLanding() {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
+        // Color palette
+        const colors = [
+            { r: 0, g: 153, b: 168 },   // Teal
+            { r: 61, g: 169, b: 245 },  // Bright Blue
+            { r: 0, g: 200, b: 220 },   // Cyan
+            { r: 100, g: 200, b: 255 }, // Light Blue
+        ];
+
         // Particle class
         class Particle {
             constructor() {
                 this.reset();
                 this.y = Math.random() * canvas.height / window.devicePixelRatio;
+                this.colorIndex = Math.floor(Math.random() * colors.length);
+                this.pulsePhase = Math.random() * Math.PI * 2;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
             }
 
             reset() {
                 this.x = Math.random() * canvas.width / window.devicePixelRatio;
                 this.y = -10;
-                this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * 0.05 + 0.1;
-                this.speedX = Math.random() * 0.03 - 0.15;
-                this.opacity = Math.random() * 0.2 + 0.2;
+                this.size = Math.random() * 4 + 1.5;
+                this.speedY = Math.random() * 0.08 + 0.12;
+                this.speedX = Math.random() * 0.04 - 0.02;
+                this.opacity = Math.random() * 0.1 + 0.3;
+                this.baseOpacity = this.opacity;
+                this.colorIndex = Math.floor(Math.random() * colors.length);
             }
 
             update(mouseX, mouseY) {
-                // Move towards mouse
+                // Smooth mouse interaction
                 const dx = mouseX - this.x;
                 const dy = mouseY - this.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 50) {
-                    const force = (50 - distance) / 200;
-                    this.x += (dx / distance) * force * 3;
-                    this.y += (dy / distance) * force * 3;
+                if (distance < 100) {
+                    const force = (100 - distance) / 100;
+                    const angle = Math.atan2(dy, dx);
+                    this.x += Math.cos(angle) * force * 2;
+                    this.y += Math.sin(angle) * force * 2;
                 }
 
-                // Normal movement
+                // Normal movement with slight drift
                 this.y += this.speedY;
-                this.x += this.speedX;
+                this.x += this.speedX + Math.sin(this.y * 0.01) * 0.02;
+
+                // Pulsing effect
+                this.pulsePhase += this.pulseSpeed;
+                this.opacity = this.baseOpacity + Math.sin(this.pulsePhase) * 0.08;
 
                 // Reset if out of bounds
                 if (this.y > canvas.height / window.devicePixelRatio + 10) {
@@ -95,7 +131,25 @@ export default function WebNexumLanding() {
             }
 
             draw(ctx) {
-                ctx.fillStyle = `rgba(0, 153, 168, ${this.opacity})`;
+                const color = colors[this.colorIndex];
+                
+                // Create gradient for glow effect
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.size * 3
+                );
+                gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${this.opacity * 0.6})`);
+                gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${this.opacity * 0.3})`);
+                gradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+
+                // Draw glow
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw core particle
+                ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.min(this.opacity * 1.0, 0.4)})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -106,28 +160,41 @@ export default function WebNexumLanding() {
         particlesRef.current = Array.from({ length: 60 }, () => new Particle());
 
         // Animation loop
+        let time = 0;
         const animate = () => {
+            time += 0.01;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Update and draw particles
             particlesRef.current.forEach(particle => {
                 particle.update(mouseRef.current.x, mouseRef.current.y);
                 particle.draw(ctx);
             });
 
-            // Draw connections
-            ctx.lineWidth = 1;
+            // Draw connections with gradient
             for (let i = 0; i < particlesRef.current.length; i++) {
                 for (let j = i + 1; j < particlesRef.current.length; j++) {
-                    const dx = particlesRef.current[i].x - particlesRef.current[j].x;
-                    const dy = particlesRef.current[i].y - particlesRef.current[j].y;
+                    const p1 = particlesRef.current[i];
+                    const p2 = particlesRef.current[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if (distance < 120) {
-                        const opacity = (1 - distance / 120) * 0.15;
-                        ctx.strokeStyle = `rgba(0, 153, 168, ${opacity})`;
+                    if (distance < 150) {
+                        const opacity = (1 - distance / 150) * 0.12;
+                        const color1 = colors[p1.colorIndex];
+                        const color2 = colors[p2.colorIndex];
+                        
+                        // Create gradient line
+                        const lineGradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+                        lineGradient.addColorStop(0, `rgba(${color1.r}, ${color1.g}, ${color1.b}, ${opacity})`);
+                        lineGradient.addColorStop(1, `rgba(${color2.r}, ${color2.g}, ${color2.b}, ${opacity})`);
+                        
+                        ctx.strokeStyle = lineGradient;
+                        ctx.lineWidth = 1.2;
                         ctx.beginPath();
-                        ctx.moveTo(particlesRef.current[i].x, particlesRef.current[i].y);
-                        ctx.lineTo(particlesRef.current[j].x, particlesRef.current[j].y);
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
                         ctx.stroke();
                     }
                 }
@@ -168,6 +235,96 @@ export default function WebNexumLanding() {
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Scroll reveal animation
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id) {
+                        setVisibleSections(prev => new Set([...prev, entry.target.id]));
+                    }
+                    // Add visible class directly to element
+                    entry.target.classList.add('visible');
+                    // Stop observing once visible
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections and animated elements after DOM is ready
+        const initObserver = () => {
+            // Observe section containers
+            Object.values(sectionRefs.current).forEach(ref => {
+                if (ref) {
+                    observer.observe(ref);
+                }
+            });
+            
+            // Observe all elements with animate-on-scroll class
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        };
+
+        // Use requestAnimationFrame to ensure DOM is ready
+        requestAnimationFrame(() => {
+            setTimeout(initObserver, 50);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Animated counters
+    useEffect(() => {
+        const statsSection = sectionRefs.current['stats'];
+        if (!statsSection) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                const duration = 1200;
+                const steps = 60;
+                const stepTime = duration / steps;
+                
+                const targetProjects = 13;
+                const targetWeeks = 4;
+                const targetMonths = 3;
+
+                let currentStep = 0;
+                const counterInterval = setInterval(() => {
+                    currentStep++;
+                    const progress = currentStep / steps;
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+
+                    setCounters({
+                        projects: Math.floor(targetProjects * easeOut),
+                        weeks: Math.floor(targetWeeks * easeOut),
+                        months: Math.floor(targetMonths * easeOut)
+                    });
+
+                    if (currentStep >= steps) {
+                        clearInterval(counterInterval);
+                        setCounters({
+                            projects: targetProjects,
+                            weeks: targetWeeks,
+                            months: targetMonths
+                        });
+                    }
+                }, stepTime);
+
+                observer.disconnect();
+            }
+        }, { threshold: 0.5 });
+
+        observer.observe(statsSection);
+        return () => observer.disconnect();
     }, []);
 
     // Prevent body scroll when modal is open
@@ -328,7 +485,11 @@ export default function WebNexumLanding() {
           --bg: #F4F6F8;
           --card: #ffffff;
         }
-        /* subtle utilities for the page preview */
+        
+        /* Отступ для прокрутки при якорных ссылках */
+        section[id] {
+          scroll-margin-top: 80px;
+        }
       `}</style>
             {toast && (
                 <div className="fixed top-6 right-6 z-[9999] animate-fadeIn">
@@ -342,20 +503,21 @@ export default function WebNexumLanding() {
             <header className="sticky top-0 z-40 backdrop-blur bg-white/60 border-b border-white/10">
                 <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <img src={logo} alt="WebNexum logo" className="w-12 h-12 object-contain rounded"/>
+                        <img src={logo} alt="WebNexum - разработка сайтов в Минске" className="w-12 h-12 object-contain rounded"/>
                         <div>
                             <div className="text-lg font-semibold">WebNexum</div>
                             <div className="text-xs text-[var(--muted)] -mt-1">Digital solutions under one roof</div>
                         </div>
                     </div>
-                    <nav className="hidden md:flex gap-8 items-center text-sm font-medium text-[var(--muted)]">
-                        <a href="#services" className="hover:text-[var(--text)]">Услуги</a>
-                        <a href="#process" className="hover:text-[var(--text)]">Процесс</a>
-                        <a href="#portfolio" className="hover:text-[var(--text)]">Портфолио</a>
-                        <a href="#about" className="hover:text-[var(--text)]">О нас</a>
+                    <nav className="hidden md:flex gap-8 items-center text-sm font-medium text-[var(--muted)]" aria-label="Основная навигация">
+                        <a href="#services" onClick={(e) => smoothScrollTo(e, 'services')} className="hover:text-[var(--text)]" aria-label="Услуги разработки сайтов">Услуги</a>
+                        <a href="#process" onClick={(e) => smoothScrollTo(e, 'process')} className="hover:text-[var(--text)]" aria-label="Процесс разработки">Процесс</a>
+                        <a href="#portfolio" onClick={(e) => smoothScrollTo(e, 'portfolio')} className="hover:text-[var(--text)]" aria-label="Портфолио проектов">Портфолио</a>
+                        <a href="#about" onClick={(e) => smoothScrollTo(e, 'about')} className="hover:text-[var(--text)]" aria-label="О веб-студии WebNexum">О нас</a>
                         <a href="#contact"
-                           className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-110">Оставить
-                            заявку</a>
+                           onClick={(e) => smoothScrollTo(e, 'contact')}
+                           className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-110"
+                           aria-label="Заказать разработку сайта">Оставить заявку</a>
                     </nav>
                 </div>
             </header>
@@ -364,44 +526,48 @@ export default function WebNexumLanding() {
                 <section className="relative grid md:grid-cols-2 gap-8 items-center pt-12" style={{ overflow: 'visible'}}>
                     {/* Particle Canvas Background - Hero Area Only, extends horizontally */}
                     <div className="relative" style={{ zIndex: 1 }}>
-                        <h1 className="absolute opacity-0">
-                            WebNexum — разработка сайтов, веб-приложений и ПО под ключ
+                        <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-[var(--text)]">
+                            <span className="gradient-text">Разработка сайтов</span> в Минске под ключ
                         </h1>
-                        <h2 className="absolute opacity-0">
-                            Разработка сайта под ключ и веб-приложений под ключ — WebNexum
-                        </h2>
-                        <h3 className="text-4xl md:text-5xl font-extrabold leading-tight text-[var(--text)]">WebNexum —
-                            цифровые решения под ключ</h3>
-                        <p className="mt-4 text-lg text-[var(--muted)] max-w-prose">Разрабатываем сайты, веб‑приложения
-                            и кастомное ПО — от идеи до поддержки. Быстро, прозрачно, с упором на бизнес‑результат.</p>
-                        <p className="absolute opacity-0" style={{ display: "none" }}>
-                            заказать разработку сайта, разработка приложений React / Node.js, разработка корпоративного сайта, разработка лендингов, создание веб-приложений, разработка сайта под ключ
-                            WebNexum — веб-студия, специализирующаяся на разработке сайтов, веб-приложений (SaaS) и кастомного ПО под ключ. Мы создаём корпоративные сайты, лендинги, CRM, интерфейсы и web-панели. Работаем в Минске и по всему миру.
+                        <p className="mt-4 text-lg text-[var(--muted)] max-w-prose">
+                            <strong>WebNexum</strong> — веб-студия в Минске. Разрабатываем <strong>сайты под ключ</strong>, веб-приложения и корпоративные решения. От идеи до поддержки.
                         </p>
 
                         <div className="mt-6 flex gap-4">
                             <a href="#contact"
+                               onClick={(e) => smoothScrollTo(e, 'contact')}
                                className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent)] text-white rounded-md shadow hover:brightness-110">Оставить
                                 заявку</a>
                             <a href="#portfolio"
+                               onClick={(e) => smoothScrollTo(e, 'portfolio')}
                                className="inline-flex items-center gap-2 px-6 py-3 border rounded-md bg-[var(--bg)] text-[var(--text)]">Посмотреть
                                 портфолио</a>
                         </div>
 
-                        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <div className="p-4 bg-[var(--card)] rounded shadow-sm">
+                        <div 
+                            id="stats"
+                            ref={el => sectionRefs.current['stats'] = el}
+                            className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4"
+                        >
+                            <div className="p-4 bg-[var(--card)] rounded shadow-sm card-hover animate-on-scroll" style={{ transitionDelay: '0.1s' }}>
                                 <div className="text-xs text-[var(--muted)]">Проекты</div>
-                                <div className="text-xl font-semibold text-[var(--text)]">{portfolio.length+10}</div>
+                                <div className="text-xl font-semibold text-[var(--text)]">
+                                    {counters.projects}+
+                                </div>
                             </div>
-                            <div className="p-4 bg-[var(--card)] rounded shadow-sm">
+                            <div className="p-4 bg-[var(--card)] rounded shadow-sm card-hover animate-on-scroll" style={{ transitionDelay: '0.2s' }}>
                                 <div className="text-xs text-[var(--muted)]">Средний срок</div>
-                                <div className="text-xl font-semibold text-[var(--text)]">4–5 недель</div>
+                                <div className="text-xl font-semibold text-[var(--text)]">
+                                    {counters.weeks > 0 ? `${counters.weeks}–5` : '4–5'} недель
+                                </div>
                             </div>
-                            <div className="p-4 bg-[var(--card)] rounded shadow-sm">
+                            <div className="p-4 bg-[var(--card)] rounded shadow-sm card-hover animate-on-scroll" style={{ transitionDelay: '0.3s' }}>
                                 <div className="text-xs text-[var(--muted)]">Поддержка</div>
-                                <div className="text-xl font-semibold text-[var(--text)]">3 мес</div>
+                                <div className="text-xl font-semibold text-[var(--text)]">
+                                    {counters.months > 0 ? counters.months : '3'} мес
+                                </div>
                             </div>
-                            <div className="p-4 bg-[var(--card)] rounded shadow-sm">
+                            <div className="p-4 bg-[var(--card)] rounded shadow-sm card-hover animate-on-scroll" style={{ transitionDelay: '0.4s' }}>
                                 <div className="text-xs text-[var(--muted)]">Технологии</div>
                                 <div className="text-xl font-semibold text-[var(--text)]">React / Node</div>
                             </div>
@@ -412,7 +578,7 @@ export default function WebNexumLanding() {
                     <div className="relative" style={{ zIndex: 1 }}>
                         <div
                             className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-lg shadow flex items-center justify-center">
-                            <img src={logo} alt="" className="w-64 h-64 object-contain opacity-90"/>
+                            <img src={logo} alt="WebNexum - веб-студия разработки сайтов в Минске" className="w-64 h-64 object-contain opacity-90 animate-float"/>
                         </div>
 
                         <div className="mt-6 md:absolute md:-bottom-8 md:left-6 md:right-6 animate-slideUp">
@@ -424,6 +590,7 @@ export default function WebNexumLanding() {
                                     </div>
                                 </div>
                                 <a href="#contact"
+                                   onClick={(e) => smoothScrollTo(e, 'contact')}
                                    className="px-5 py-3 bg-[var(--accent-2)] text-white rounded-md hover:brightness-110">
                                     Оставить заявку
                                 </a>
@@ -446,10 +613,15 @@ export default function WebNexumLanding() {
                 </section>
 
                 {/* SERVICES */}
-                <section id="services" className="mt-20">
-                    <h2 className="text-2xl font-semibold">Наши услуги</h2>
-                    <p className="text-[var(--muted)] mt-2 max-w-prose">Полный цикл разработки: анализ, дизайн,
-                        разработка, тестирование и поддержка.</p>
+                <section 
+                    id="services" 
+                    ref={el => sectionRefs.current['services'] = el}
+                    className="mt-20"
+                >
+                    <h2 className="text-2xl font-semibold animate-on-scroll">Наши услуги</h2>
+                    <p className="text-[var(--muted)] mt-2 max-w-prose animate-on-scroll" style={{ transitionDelay: '0.1s' }}>
+                        Полный цикл <strong>разработки сайтов под ключ</strong>: анализ, дизайн, разработка, тестирование и поддержка.
+                    </p>
 
                     <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
@@ -457,10 +629,14 @@ export default function WebNexumLanding() {
                             {title: "Веб-приложения", desc: "SaaS, панели управления, кастомные решения"},
                             {title: "Мобильные решения", desc: "PWA, интеграции, адаптив"},
                             {title: "Дизайн & Бренд", desc: "UI/UX, прототипы, айдентика"},
-                        ].map((s) => (
-                            <div key={s.title} className="p-6 bg-[var(--card)] rounded-lg shadow-sm">
+                        ].map((s, index) => (
+                            <div 
+                                key={s.title} 
+                                className="p-6 bg-[var(--card)] rounded-lg shadow-sm card-hover animate-on-scroll"
+                                style={{ transitionDelay: `${0.2 + index * 0.1}s` }}
+                            >
                                 <div
-                                    className="h-12 w-12 rounded-md flex items-center justify-center bg-[var(--bg)]">🔷
+                                    className="h-12 w-12 rounded-md flex items-center justify-center bg-[var(--bg)] transition-transform duration-300 hover:scale-110">🔷
                                 </div>
                                 <h3 className="mt-4 font-semibold text-[var(--text)]">{s.title}</h3>
                                 <p className="mt-2 text-[var(--muted)] text-sm">{s.desc}</p>
@@ -470,9 +646,13 @@ export default function WebNexumLanding() {
                 </section>
 
                 {/* PROCESS / HOW WE WORK */}
-                <section id="process" className="mt-20">
-                    <h2 className="text-2xl font-semibold">Как мы работаем</h2>
-                    <p className="text-[var(--muted)] mt-2 max-w-prose">Прозрачный процесс разработки от первого контакта до запуска проекта.</p>
+                <section 
+                    id="process" 
+                    ref={el => sectionRefs.current['process'] = el}
+                    className="mt-20"
+                >
+                    <h2 className="text-2xl font-semibold animate-on-scroll">Как мы работаем</h2>
+                    <p className="text-[var(--muted)] mt-2 max-w-prose animate-on-scroll" style={{ transitionDelay: '0.1s' }}>Прозрачный процесс разработки от первого контакта до запуска проекта.</p>
 
                     <div className="mt-6 relative">
                         {/* Timeline line for desktop */}
@@ -511,10 +691,14 @@ export default function WebNexumLanding() {
                                     icon: "🔧"
                                 }
                             ].map((item, index) => (
-                                <div key={index} className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6">
+                                <div 
+                                    key={index} 
+                                    className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 animate-on-scroll"
+                                    style={{ transitionDelay: `${0.2 + index * 0.1}s` }}
+                                >
                                     {/* Step number circle */}
                                     <div className="flex-shrink-0 relative z-10 flex items-center justify-center sm:justify-start">
-                                        <div className="md:-ml-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] flex items-center justify-center shadow-md">
+                                        <div className="md:-ml-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110">
 
                                         <span className="text-white font-bold text-xs sm:text-sm md:text-base">{item.step}</span>
                                         </div>
@@ -522,7 +706,7 @@ export default function WebNexumLanding() {
                                     
                                     {/* Content */}
                                     <div className="flex-1 sm:pt-0.5">
-                                        <div className="bg-[var(--card)] rounded-lg shadow-sm p-4 md:p-5 hover:shadow-md transition-shadow">
+                                        <div className="bg-[var(--card)] rounded-lg shadow-sm p-4 md:p-5 hover:shadow-md transition-all duration-300 card-hover">
                                             <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
                                                 <div className="text-xl sm:text-2xl md:text-3xl flex-shrink-0">{item.icon}</div>
                                                 <div className="flex-1">
@@ -645,24 +829,55 @@ export default function WebNexumLanding() {
                 </section>
 
                 {/* ADVANTAGES / ABOUT */}
-                <section id="about" className="mt-20 grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h2 className="text-2xl font-semibold">Почему выбирают нас</h2>
-                        <ul className="mt-6 space-y-4 text-[var(--muted)]">
-                            <li>— Команда senior/middle разработчиков с опытом реализации enterprise задач.</li>
-                            <li>— Прозрачные процессы и гибкий подход (Agile).</li>
-                            <li>— Поддержка и сопровождение после релиза.</li>
-                        </ul>
-                    </div>
-                    <div className="p-6 bg-[var(--card)] rounded-lg shadow">
-                        <h3 className="font-semibold">О нас</h3>
-                        <p className="mt-3 text-[var(--muted)]">WebNexum — небольшая, но опытная студия разработки. Мы
-                            работаем с компаниями, которые ценят скорость, качество и результат. С нами проще запускать
-                            цифровые продукты.</p>
-                        <div className="mt-4 flex gap-3">
-                            <a href="#contact"
-                               className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-110">Связаться</a>
-                            <a href="#portfolio" className="px-4 py-2 rounded border hover:brightness-75">Кейсы</a>
+                <section id="about" className="mt-20">
+                    <div className="grid md:grid-cols-2 gap-8 items-start">
+                        {/* Почему выбирают нас */}
+                        <div>
+                            <h2 className="text-2xl font-semibold mb-6">Почему выбирают нас</h2>
+                            <div className="space-y-4">
+                                <div className="p-5 bg-[var(--card)] rounded-lg shadow-sm hover:shadow-md transition-all card-hover border-l-4 border-[var(--accent)]">
+                                    <h3 className="font-semibold text-[var(--text)] mb-2">Опытная команда</h3>
+                                    <p className="text-sm text-[var(--muted)]">Senior/middle разработчики с опытом реализации enterprise задач</p>
+                                </div>
+                                
+                                <div className="p-5 bg-[var(--card)] rounded-lg shadow-sm hover:shadow-md transition-all card-hover border-l-4 border-[var(--accent-2)]">
+                                    <h3 className="font-semibold text-[var(--text)] mb-2">Прозрачные процессы</h3>
+                                    <p className="text-sm text-[var(--muted)]">Гибкий подход (Agile) с регулярными демо и отчетами</p>
+                                </div>
+                                
+                                <div className="p-5 bg-[var(--card)] rounded-lg shadow-sm hover:shadow-md transition-all card-hover border-l-4 border-[var(--accent)]">
+                                    <h3 className="font-semibold text-[var(--text)] mb-2">Поддержка</h3>
+                                    <p className="text-sm text-[var(--muted)]">Сопровождение и техподдержка после релиза</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* О нас */}
+                        <div className="relative h-full">
+                            <div className="p-8 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] rounded-xl shadow-lg text-white relative overflow-hidden h-full flex flex-col">
+                                {/* Декоративные элементы */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
+                                
+                                <div className="relative z-10 flex-1 flex flex-col">
+                                    <h3 className="text-2xl font-semibold mb-4">О нас</h3>
+                                    <p className="text-white/90 leading-relaxed mb-6 flex-1">
+                                        <strong className="text-white">WebNexum</strong> — веб-студия в Минске. Разрабатываем <strong className="text-white">сайты под ключ</strong> и веб-приложения. Работаем с компаниями, которые ценят скорость, качество и результат.
+                                    </p>
+                                    <div className="flex flex-wrap gap-3">
+                                        <a href="#contact"
+                                           onClick={(e) => smoothScrollTo(e, 'contact')}
+                                           className="px-5 py-2.5 rounded-lg bg-white text-[var(--accent)] font-medium hover:bg-white/90 transition-all shadow-md hover:shadow-lg">
+                                            Связаться
+                                        </a>
+                                        <a href="#portfolio"
+                                           onClick={(e) => smoothScrollTo(e, 'portfolio')}
+                                           className="px-5 py-2.5 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all backdrop-blur-sm border border-white/20">
+                                            Кейсы
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -673,8 +888,9 @@ export default function WebNexumLanding() {
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <h2 className="text-2xl font-semibold">Готовы обсудить проект?</h2>
-                                <p className="mt-2 text-[var(--muted)]">Оставьте заявку — опишем шаги и предварительную
-                                    оценку.</p>
+                                <p className="mt-2 text-[var(--muted)]">
+                                    Оставьте заявку — опишем шаги и предварительную оценку.
+                                </p>
 
                                 <div className="mt-6 space-y-4 text-sm text-[var(--muted)]">
                                     <div><strong>Email:</strong> <a href={'mailto:support@webnexum.com'}
@@ -826,7 +1042,7 @@ export default function WebNexumLanding() {
                 <div className="mx-auto max-w-6xl px-6 py-10 grid md:grid-cols-3 gap-6">
                     <div>
                         <div className="flex items-center gap-3">
-                            <img src={logo} alt="WebNexum logo" className="w-10 h-10 object-contain rounded"/>
+                            <img src={logo} alt="WebNexum - разработка сайтов в Минске" className="w-10 h-10 object-contain rounded"/>
                             <div>
                                 <div className="font-semibold">WebNexum</div>
                                 <div className="text-xs text-white/80">Digital solutions under one roof</div>
@@ -839,10 +1055,10 @@ export default function WebNexumLanding() {
                         <div>
                             <h4 className="font-semibold">Навигация</h4>
                             <ul className="mt-2 text-sm text-white/80 space-y-2">
-                                <li><a href="#services">Услуги</a></li>
-                                <li><a href="#process">Процесс</a></li>
-                                <li><a href="#portfolio">Портфолио</a></li>
-                                <li><a href="#contact">Контакты</a></li>
+                                <li><a href="#services" onClick={(e) => smoothScrollTo(e, 'services')} className="hover:text-white transition-colors">Услуги</a></li>
+                                <li><a href="#process" onClick={(e) => smoothScrollTo(e, 'process')} className="hover:text-white transition-colors">Процесс</a></li>
+                                <li><a href="#portfolio" onClick={(e) => smoothScrollTo(e, 'portfolio')} className="hover:text-white transition-colors">Портфолио</a></li>
+                                <li><a href="#contact" onClick={(e) => smoothScrollTo(e, 'contact')} className="hover:text-white transition-colors">Контакты</a></li>
                             </ul>
                         </div>
                         <div>
