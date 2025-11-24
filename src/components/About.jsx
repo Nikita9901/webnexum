@@ -34,10 +34,11 @@ export function About({ t }) {
 
                 {/* О нас */}
                 <div className="relative h-full">
-                    <div className="p-8 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] rounded-xl shadow-lg text-white relative overflow-hidden h-full flex flex-col">
+                    <div className="p-8 md:p-10 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] rounded-2xl shadow-2xl text-white relative overflow-hidden h-full flex flex-col">
                         {/* Декоративные элементы */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
+                        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-xl"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 blur-xl"></div>
+                        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
                         
                         <div className="relative z-10 flex-1 flex flex-col">
                             <h3 className="text-2xl font-semibold mb-4">{t.about.aboutTitle}</h3>

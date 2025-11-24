@@ -62,12 +62,18 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                                     <div key={p.id} className="min-w-full flex-shrink-0 w-full flex">
                                         <article 
                                             onClick={() => onProjectClick(p)}
-                                            className="bg-[var(--card)] rounded-lg shadow hover:shadow-md overflow-hidden cursor-pointer transition-all w-full flex flex-col"
+                                            className="group bg-[var(--card)] rounded-xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer transition-all duration-300 w-full flex flex-col border border-transparent hover:border-[var(--accent)]/20"
                                         >
-                                            <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white overflow-hidden">
-                                                <img src={p.img} alt={`${p.title} - проект веб-разработки от WebNexum`} loading="lazy" className="w-full h-full object-cover"/>
+                                            <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white overflow-hidden relative">
+                                                <img 
+                                                    src={p.img} 
+                                                    alt={`${p.title} - проект веб-разработки от WebNexum`} 
+                                                    loading="lazy" 
+                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                             </div>
-                                            <div className="p-4 sm:p-6 flex-1 flex flex-col">
+                                            <div className="p-5 sm:p-6 flex-1 flex flex-col">
                                                 <div className="flex items-start justify-between gap-2">
                                                     <h3 className="font-semibold text-lg sm:text-xl text-[var(--text)]">{p.title}</h3>
                                                 </div>
@@ -90,7 +96,7 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                         {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
                         <button
                             onClick={() => setCurrentIndex((prev) => (prev === 0 ? portfolio.length - 1 : prev - 1))}
-                            className="hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
+                            className="carousel-nav-btn hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 z-20 items-center justify-center"
                             aria-label="Previous project"
                         >
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +105,7 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                         </button>
                         <button
                             onClick={() => setCurrentIndex((prev) => (prev === portfolio.length - 1 ? 0 : prev + 1))}
-                            className="hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
+                            className="carousel-nav-btn hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 z-20 items-center justify-center"
                             aria-label="Next project"
                         >
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,21 +115,21 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                     </div>
                 </div>
 
-                {/* Dot Indicators */}
-                <div className="flex justify-center gap-2 mt-4 sm:mt-6">
-                    {portfolio.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentIndex(index)}
-                            className={`h-2 rounded-full transition-all ${
-                                index === currentIndex 
-                                    ? 'w-8 bg-[var(--accent)]' 
-                                    : 'w-2 bg-[var(--muted)] opacity-50 hover:opacity-75'
-                            }`}
-                            aria-label={`Go to project ${index + 1}`}
-                        />
-                    ))}
-                </div>
+                        {/* Dot Indicators */}
+                        <div className="flex justify-center gap-1.5 md:gap-2 mt-4 md:mt-6">
+                            {portfolio.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentIndex(index)}
+                                    className={`carousel-dot h-1.5 md:h-2 rounded-full transition-all ${
+                                        index === currentIndex 
+                                            ? 'w-4 md:w-8 bg-[var(--accent)]' 
+                                            : 'w-1.5 md:w-2 bg-[var(--muted)] opacity-50 hover:opacity-75'
+                                    }`}
+                                    aria-label={`Go to project ${index + 1}`}
+                                />
+                            ))}
+                        </div>
             </div>
         </section>
     );

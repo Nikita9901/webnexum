@@ -20,11 +20,11 @@ export function Footer({ t, language }) {
                 <div className="md:col-span-2 flex justify-between">
                     <div>
                         <h4 className="font-semibold">{language === 'ru' ? 'Навигация' : 'Navigation'}</h4>
-                        <ul className="mt-2 text-sm text-white/80 space-y-2">
-                            <li><a href="#services" onClick={(e) => smoothScrollTo(e, 'services')} className="hover:text-white transition-colors">{t.nav.services}</a></li>
-                            <li><a href="#process" onClick={(e) => smoothScrollTo(e, 'process')} className="hover:text-white transition-colors">{t.nav.process}</a></li>
-                            <li><a href="#portfolio" onClick={(e) => smoothScrollTo(e, 'portfolio')} className="hover:text-white transition-colors">{t.nav.portfolio}</a></li>
-                            <li><a href="#contact" onClick={(e) => smoothScrollTo(e, 'contact')} className="hover:text-white transition-colors">{language === 'ru' ? 'Контакты' : 'Contact'}</a></li>
+                        <ul className="mt-2 text-sm text-white/80 space-y-3">
+                            <li><a href="#services" onClick={(e) => smoothScrollTo(e, 'services')} className="hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1" aria-label={t.nav.services}>{t.nav.services}</a></li>
+                            <li><a href="#process" onClick={(e) => smoothScrollTo(e, 'process')} className="hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1" aria-label={t.nav.process}>{t.nav.process}</a></li>
+                            <li><a href="#portfolio" onClick={(e) => smoothScrollTo(e, 'portfolio')} className="hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1" aria-label={t.nav.portfolio}>{t.nav.portfolio}</a></li>
+                            <li><a href="#contact" onClick={(e) => smoothScrollTo(e, 'contact')} className="hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1" aria-label={language === 'ru' ? 'Контакты' : 'Contact'}>{language === 'ru' ? 'Контакты' : 'Contact'}</a></li>
                         </ul>
                     </div>
                     <div>

@@ -210,13 +210,18 @@ export function Hero({ t, language, counters, sectionRefs }) {
                     <p>Веб-студия WebNexum работает с клиентами в Минске и по всей Беларуси. Мы создаем современные, быстрые и функциональные веб-решения, которые помогают бизнесу расти. Разработка сайта под ключ включает дизайн, верстку, программирование, тестирование и запуск проекта. Стоимость разработки сайта зависит от сложности проекта и объема работ. Свяжитесь с нами для получения детальной оценки вашего проекта.</p>
                 </div>
 
-                <div className="mt-6 flex gap-4">
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
                     <a href="#contact"
                        onClick={(e) => smoothScrollTo(e, 'contact')}
-                       className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-md shadow hover:brightness-110 transition-all">{t.hero.cta}</a>
+                       className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold text-base group">
+                        <span>{t.hero.cta}</span>
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </a>
                     <a href="#portfolio"
                        onClick={(e) => smoothScrollTo(e, 'portfolio')}
-                       className="inline-flex items-center gap-2 px-6 py-3 border rounded-md bg-[var(--bg)] text-[var(--text)]">{t.hero.portfolio}</a>
+                       className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-[var(--accent)]/30 rounded-lg bg-[var(--bg)] text-[var(--text)] hover:border-[var(--accent)] hover:bg-[var(--accent)]/5 transition-all duration-300 font-semibold text-base">{t.hero.portfolio}</a>
                 </div>
 
                 <div 
@@ -252,7 +257,7 @@ export function Hero({ t, language, counters, sectionRefs }) {
 
             <div className="relative" style={{ zIndex: 1 }}>
                 <div
-                    className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-lg shadow flex items-center justify-center">
+                    className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-xl shadow-xl flex items-center justify-center overflow-hidden">
                     <img src={logo} alt="WebNexum - веб-студия разработки сайтов в Минске" className="w-64 h-64 object-contain opacity-90 animate-float"/>
                 </div>
 

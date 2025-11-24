@@ -12,38 +12,38 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                         <p className="text-white/90 mb-6 sm:mb-8 text-base sm:text-lg">{t.contact.description}</p>
 
                         <div className="space-y-3 sm:space-y-4 md:space-y-5">
-                            <a href={'mailto:support@webnexum.com'} target={'_blank'} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-all backdrop-blur-sm">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href={'mailto:support@webnexum.com'} target={'_blank'} rel="noopener noreferrer" className="group flex items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all duration-300 group-hover:scale-110">
+                                    <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <div className="text-xs sm:text-sm text-white/70">{t.contact.email}</div>
-                                    <div className="font-semibold text-sm sm:text-base truncate">support@webnexum.com</div>
+                                    <div className="text-xs sm:text-sm text-white/70 mb-1">{t.contact.email}</div>
+                                    <div className="font-bold text-sm sm:text-base truncate">support@webnexum.com</div>
                                 </div>
                             </a>
-                            <a href={'https://t.me/webnexum'} target={'_blank'} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-all backdrop-blur-sm">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href={'https://t.me/webnexum'} target={'_blank'} rel="noopener noreferrer" className="group flex items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all duration-300 group-hover:scale-110">
+                                    <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <div className="text-xs sm:text-sm text-white/70">{t.contact.telegram}</div>
-                                    <div className="font-semibold text-sm sm:text-base">@webnexum</div>
+                                    <div className="text-xs sm:text-sm text-white/70 mb-1">{t.contact.telegram}</div>
+                                    <div className="font-bold text-sm sm:text-base">@webnexum</div>
                                 </div>
                             </a>
-                            <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white/10 rounded-xl backdrop-blur-sm">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <div className="text-xs sm:text-sm text-white/70">{t.contact.address}</div>
-                                    <div className="font-semibold text-sm sm:text-base">{t.contact.addressValue}</div>
+                                    <div className="text-xs sm:text-sm text-white/70 mb-1">{t.contact.address}</div>
+                                    <div className="font-bold text-sm sm:text-base">{t.contact.addressValue}</div>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                     onChange={handleChange} 
                                     required
                                     placeholder={t.contact.namePlaceholder} 
-                                    className="w-full px-4 py-2.5 sm:py-3 rounded-lg border border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 outline-none transition-all text-sm sm:text-base"
+                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 text-sm sm:text-base hover:border-[var(--accent)]/50"
                                 />
                             </div>
                             
@@ -78,10 +78,10 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                         <label
                                             key={opt.value}
                                             className={`
-                                                flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 cursor-pointer transition-all text-center
+                                                flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 sm:py-3.5 rounded-lg border-2 cursor-pointer transition-all duration-300 text-center group
                                                 ${form.connect === opt.value 
-                                                    ? "border-[var(--accent)] bg-[var(--accent)]/10 shadow-md" 
-                                                    : "border-[var(--muted)]/30 bg-white hover:border-[var(--accent)]/50 hover:bg-[var(--bg)]"
+                                                    ? "border-[var(--accent)] bg-gradient-to-br from-[var(--accent)]/10 to-[var(--accent-2)]/10 shadow-lg scale-105" 
+                                                    : "border-[var(--muted)]/30 bg-white hover:border-[var(--accent)]/50 hover:bg-[var(--bg)] hover:scale-105"
                                                 }
                                             `}
                                         >
@@ -112,7 +112,7 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                         onChange={handleChange}
                                         type={form.connect === 'phone' || form.connect === 'viber' ? "tel" : form.connect === 'email' ? 'email' : 'text'}
                                         placeholder={form.connect === 'phone' ? t.contact.phonePlaceholder : form.connect === 'email' ? t.contact.emailPlaceholder : form.connect === 'viber' ? t.contact.viberPlaceholder : '@username'}
-                                        className="w-full px-4 py-2.5 sm:py-3 rounded-lg border border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 outline-none transition-all text-sm sm:text-base"
+                                        className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 text-sm sm:text-base hover:border-[var(--accent)]/50"
                                     />
                                 </div>
                                 <div>
@@ -141,14 +141,14 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                     onChange={handleChange}
                                     placeholder={t.contact.messagePlaceholder} 
                                     rows={4}
-                                    className="w-full px-4 py-2.5 sm:py-3 rounded-lg border border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 outline-none transition-all resize-none text-sm sm:text-base"
+                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 resize-none text-sm sm:text-base hover:border-[var(--accent)]/50"
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={sending}
-                                className="w-full px-6 py-3 sm:py-4 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-lg font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                                className="w-full px-6 py-4 sm:py-5 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-lg font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-base sm:text-lg group"
                             >
                                 {sending ? (
                                     <>

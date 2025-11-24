@@ -54,33 +54,33 @@ export function ProjectModal({ project, onClose, t }) {
                     </div>
 
                     {/* Problem Section */}
-                    <div className="mb-6 pb-6 border-b border-[var(--bg)]">
-                        <h3 className="text-xl font-semibold text-[var(--text)] mb-3 flex items-center gap-2">
-                            <span className="text-[var(--accent)]">📋</span>
-                            {t.portfolio.problem}
-                        </h3>
-                        <p className="text-[var(--muted)] leading-relaxed">
-                            {project.problem}
-                        </p>
-                    </div>
+                            <div className="mb-6 pb-6 border-b border-[var(--bg)]">
+                                <h3 className="text-xl font-semibold text-[var(--text)] mb-3 flex items-center gap-2">
+                                    <span className="text-[var(--accent)]">📋</span>
+                                    {t.portfolio.problem}
+                                </h3>
+                                <p className="text-[var(--muted)] leading-relaxed">
+                                    {project.problem}
+                                </p>
+                            </div>
 
-                    {/* What We Did Section */}
-                    <div>
-                        <h3 className="text-xl font-semibold text-[var(--text)] mb-4 flex items-center gap-2">
-                            <span className="text-[var(--accent)]">⚙️</span>
-                            {t.portfolio.whatWeDid}
-                        </h3>
-                        <ul className="space-y-3">
-                            {project.whatWeDid.map((item, index) => (
-                                <li key={index} className="flex items-start gap-3">
-                                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center text-xs font-bold mt-0.5">
-                                        {index + 1}
-                                    </span>
-                                    <span className="text-[var(--muted)] leading-relaxed">{item}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                            {/* What We Did Section */}
+                            <div>
+                                <h3 className="text-xl font-semibold text-[var(--text)] mb-4 flex items-center gap-2">
+                                    <span className="text-[var(--accent)]">⚙️</span>
+                                    {t.portfolio.whatWeDid}
+                                </h3>
+                                <ul className="space-y-3">
+                                    {project.whatWeDid.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-3">
+                                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center text-xs font-bold mt-0.5">
+                                                {index + 1}
+                                            </span>
+                                            <span className="text-[var(--muted)] leading-relaxed">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                 </div>
             </div>
         </div>
