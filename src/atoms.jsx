@@ -6,21 +6,21 @@ export function FAQItem({ question, answer }) {
 
     return (
         <div
-            className="faq-item border border-[#dbe2f1] rounded-xl p-4 mb-3
-                       bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
+            className="faq-item border border-[#dbe2f1] rounded-xl mb-3
+                       bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
         >
             <button
-                className="w-full flex justify-between items-center text-left"
+                className="w-full flex justify-between items-center text-left p-4 min-h-[60px]"
                 onClick={() => setOpen(!open)}
             >
-                <span className="text-lg font-medium text-[#1c1f33]">
+                <span className="text-lg font-medium text-[#1c1f33] pr-4">
                     {question}
                 </span>
 
                 <svg
                     className={`
                         pointer-events-none 
-                        w-4 h-4 opacity-60
+                        w-5 h-5 opacity-60 flex-shrink-0
                         transition-transform duration-300
                         [transition-timing-function:cubic-bezier(.34,1.56,.64,1)]
                         ${open ? "rotate-180 scale-110" : "rotate-0 scale-100"}
@@ -50,7 +50,7 @@ export function FAQItem({ question, answer }) {
                     ${open ? "animate-faqSpring" : "opacity-0"}
                 `}
             >
-                <p className="mt-3 text-[#4a4f6a] leading-relaxed opacity-90">
+                <p className="px-4 pb-4 text-[#4a4f6a] leading-relaxed opacity-90">
                     {answer}
                 </p>
             </div>
