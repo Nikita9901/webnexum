@@ -20,8 +20,8 @@ import "./styles/global.css";
 export default function WebNexumLanding() {
     const { language, changeLanguage, t } = useLanguage();
     const [theme, setTheme] = useState(() => {
-        if (typeof window === 'undefined') return 'light';
-        return localStorage.getItem('wn-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (typeof window === 'undefined') return 'dark';
+        return localStorage.getItem('wn-theme') || 'dark';
     });
     const [form, setForm] = useState({
         name: "",
@@ -206,16 +206,6 @@ export default function WebNexumLanding() {
     const portfolio = useMemo(() => [
         {
             id: 1,
-            title: t.projects.project1.title,
-            tags: ["React", "Flask", "MongoDB"],
-            desc: t.projects.project1.desc,
-            img: project1Img,
-            href: "https://zignaly.com",
-            problem: t.projects.project1.problem,
-            whatWeDid: t.projects.project1.whatWeDid
-        },
-        {
-            id: 2,
             title: t.projects.project2.title,
             tags: ["Next.js", "Express.js"],
             desc: t.projects.project2.desc,
@@ -223,6 +213,16 @@ export default function WebNexumLanding() {
             href: "https://vendettacity.org",
             problem: t.projects.project2.problem,
             whatWeDid: t.projects.project2.whatWeDid
+        },
+        {
+            id: 2,
+            title: t.projects.project1.title,
+            tags: ["React", "Flask", "MongoDB"],
+            desc: t.projects.project1.desc,
+            img: project1Img,
+            href: "https://zignaly.com",
+            problem: t.projects.project1.problem,
+            whatWeDid: t.projects.project1.whatWeDid
         },
         {
             id: 3,

@@ -75,11 +75,11 @@ body {
   --secondary-btn-bg: rgba(255, 255, 255, 0.04);
   --secondary-btn-text: #E2E8F0;
   --secondary-btn-border: rgba(94, 136, 195, 0.4);
-  --gradient-primary-from: #38BDF8;
-  --gradient-primary-to: #A855F7;
-  --gradient-accent-from: #5EEAD4;
-  --gradient-accent-to: #22D3EE;
-  --button-primary-shadow: rgba(3, 10, 24, 0.65);
+  --gradient-primary-from: #2EA495;
+  --gradient-primary-to: #2F89B2;
+  --gradient-accent-from: #44C9B5;
+  --gradient-accent-to: #1EB3BA;
+  --button-primary-shadow: rgba(4, 18, 36, 0.7);
 }
 
 /* Отступ для прокрутки при якорных ссылках */

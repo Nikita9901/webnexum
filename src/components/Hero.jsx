@@ -4,7 +4,8 @@ import logoDark from '../assets/fulllogo-dark.png';
 import { smoothScrollTo } from '../utils/smoothScroll';
 
 export function Hero({ t, language, counters, sectionRefs, theme = 'light' }) {
-    const logo = theme === 'dark' ? logoDark : logoLight;
+    const isDarkTheme = theme === 'dark';
+    const logo = isDarkTheme ? logoDark : logoLight;
     const canvasRef = useRef(null);
     const particlesRef = useRef([]);
     const mouseRef = useRef({ x: 0, y: 0 });
@@ -283,14 +284,21 @@ export function Hero({ t, language, counters, sectionRefs, theme = 'light' }) {
             </div>
             <canvas
                 ref={canvasRef}
-                className="absolute w-screen h-full"
-                style={{
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    top: 0
-                }}
+                className={isDarkTheme ? 'fixed inset-0 w-full h-full' : 'absolute w-screen h-full'}
+                style={
+                    isDarkTheme
+                        ? {
+                            pointerEvents: 'none',
+                            zIndex: 0
+                        }
+                        : {
+                            pointerEvents: 'none',
+                            zIndex: 0,
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            top: 0
+                        }
+                }
             />
         </section>
     );
