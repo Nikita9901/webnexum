@@ -5,6 +5,81 @@
   --muted: #6B7A88;
   --bg: #F4F6F8;
   --card: #ffffff;
+  --card-border: rgba(30, 42, 54, 0.06);
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-border: rgba(30, 42, 54, 0.08);
+  --surface-muted: #f4f7fb;
+  --contact-panel-to: #fefefe;
+  --contact-form-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-hover-bg: #f5f8ff;
+  --hero-card-from: #ffffff;
+  --hero-card-to: #f4f6f8;
+  --hero-quick-bg: #ffffff;
+  --hero-quick-border: rgba(30, 42, 54, 0.08);
+  --faq-bg: #ffffff;
+  --faq-border: rgba(30, 42, 54, 0.12);
+  --faq-question: #1c1f33;
+  --faq-answer: #4a4f6a;
+  --footer-bg: #0c1827;
+  --footer-text: #f8fbff;
+  --footer-muted: rgba(248, 251, 255, 0.8);
+  --secondary-btn-bg: #ffffff;
+  --secondary-btn-text: #1e2a36;
+  --secondary-btn-border: rgba(0, 0, 0, 0.1);
+  --gradient-primary-from: #0099A8;
+  --gradient-primary-to: #3DA9F5;
+  --gradient-accent-from: #3DA9F5;
+  --gradient-accent-to: #67E8F9;
+  --button-primary-shadow: rgba(0, 153, 168, 0.35);
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+[data-theme="dark"] {
+  --accent: #5EEAD4;
+  --accent-2: #60A5FA;
+  --text: #F8FAFC;
+  --muted: #94A3B8;
+  --bg: #050B16;
+  --card: #0F172A;
+  --card-border: rgba(94, 136, 195, 0.35);
+  --header-bg: rgba(5, 11, 22, 0.92);
+  --header-border: rgba(148, 163, 184, 0.3);
+  --surface-muted: #071126;
+  --contact-panel-to: rgba(5, 11, 22, 0.95);
+  --contact-form-bg: rgba(4, 10, 20, 0.95);
+  --input-bg: rgba(5, 11, 22, 0.9);
+  --input-hover-bg: rgba(9, 16, 30, 0.95);
+  --hero-card-from: #0B1728;
+  --hero-card-to: #050B16;
+  --hero-quick-bg: rgba(7, 13, 26, 0.95);
+  --hero-quick-border: rgba(94, 136, 195, 0.3);
+  --faq-bg: rgba(7, 13, 26, 0.95);
+  --faq-border: rgba(94, 136, 195, 0.35);
+  --faq-question: #F8FAFC;
+  --faq-answer: rgba(226, 232, 240, 0.85);
+  --footer-bg: #01040A;
+  --footer-text: #E2E8F0;
+  --footer-muted: rgba(148, 163, 184, 0.9);
+  --secondary-btn-bg: rgba(255, 255, 255, 0.04);
+  --secondary-btn-text: #E2E8F0;
+  --secondary-btn-border: rgba(94, 136, 195, 0.4);
+  --gradient-primary-from: #38BDF8;
+  --gradient-primary-to: #A855F7;
+  --gradient-accent-from: #5EEAD4;
+  --gradient-accent-to: #22D3EE;
+  --button-primary-shadow: rgba(3, 10, 24, 0.65);
 }
 
 /* Отступ для прокрутки при якорных ссылках */

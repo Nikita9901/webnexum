@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import logo from '../assets/fulllogo.png';
+import logoLight from '../assets/fulllogo.png';
+import logoDark from '../assets/fulllogo-dark.png';
 import { smoothScrollTo } from '../utils/smoothScroll';
 
-export function Hero({ t, language, counters, sectionRefs }) {
+export function Hero({ t, language, counters, sectionRefs, theme = 'light' }) {
+    const logo = theme === 'dark' ? logoDark : logoLight;
     const canvasRef = useRef(null);
     const particlesRef = useRef([]);
     const mouseRef = useRef({ x: 0, y: 0 });
@@ -60,7 +62,7 @@ export function Hero({ t, language, counters, sectionRefs }) {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < 100) {
-                    const force = (100 - distance) / 100;
+                    const force = (100 - distance) / 300;
                     const angle = Math.atan2(dy, dx);
                     this.x += Math.cos(angle) * force * 2;
                     this.y += Math.sin(angle) * force * 2;
@@ -213,7 +215,7 @@ export function Hero({ t, language, counters, sectionRefs }) {
                 <div className="mt-8 flex flex-col sm:flex-row gap-4">
                     <a href="#contact"
                        onClick={(e) => smoothScrollTo(e, 'contact')}
-                       className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold text-base group">
+                       className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold text-base group shadow-[0_20px_35px_var(--button-primary-shadow)]">
                         <span>{t.hero.cta}</span>
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -221,7 +223,9 @@ export function Hero({ t, language, counters, sectionRefs }) {
                     </a>
                     <a href="#portfolio"
                        onClick={(e) => smoothScrollTo(e, 'portfolio')}
-                       className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-[var(--accent)]/30 rounded-lg bg-[var(--bg)] text-[var(--text)] hover:border-[var(--accent)] hover:bg-[var(--accent)]/5 transition-all duration-300 font-semibold text-base">{t.hero.portfolio}</a>
+                       className="inline-flex items-center justify-center gap-2 px-8 py-4 border rounded-lg bg-[var(--secondary-btn-bg)] text-[var(--secondary-btn-text)] border-[color:var(--secondary-btn-border)] hover:border-[var(--accent)] hover:bg-[var(--accent)]/10 transition-all duration-300 font-semibold text-base backdrop-blur-sm">
+                        {t.hero.portfolio}
+                    </a>
                 </div>
 
                 <div 
@@ -257,12 +261,12 @@ export function Hero({ t, language, counters, sectionRefs }) {
 
             <div className="relative" style={{ zIndex: 1 }}>
                 <div
-                    className="w-full h-80 md:h-[420px] bg-gradient-to-br from-white to-[var(--bg)] rounded-xl shadow-xl flex items-center justify-center overflow-hidden">
+                    className="w-full h-80 md:h-[420px] bg-gradient-to-br from-[var(--hero-card-from)] to-[var(--hero-card-to)] border border-[color:var(--card-border)] rounded-xl shadow-xl flex items-center justify-center overflow-hidden backdrop-blur">
                     <img src={logo} alt="WebNexum - веб-студия разработки сайтов в Минске" className="w-64 h-64 object-contain opacity-90 animate-float"/>
                 </div>
 
                 <div className="mt-6 md:absolute md:-bottom-8 md:left-6 md:right-6 animate-slideUp">
-                    <div className="mx-auto max-w-4xl bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row gap-4 items-center">
+                    <div className="mx-auto max-w-4xl bg-[var(--hero-quick-bg)] border border-[color:var(--hero-quick-border)] rounded-xl shadow-lg p-6 flex flex-col md:flex-row gap-4 items-center backdrop-blur">
                         <div className="flex-1">
                             <div className="text-sm text-[var(--muted)]">{t.contact.quickContact}</div>
                             <div className="font-semibold text-[var(--text)]">
@@ -271,7 +275,7 @@ export function Hero({ t, language, counters, sectionRefs }) {
                         </div>
                         <a href="#contact"
                            onClick={(e) => smoothScrollTo(e, 'contact')}
-                           className="px-5 py-3 bg-[var(--accent-2)] text-white rounded-md hover:brightness-110">
+                           className="px-5 py-3 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white rounded-md shadow-md hover:shadow-lg hover:brightness-110 transition-all duration-300 shadow-[0_18px_30px_var(--button-primary-shadow)]">
                             {t.nav.contact}
                         </a>
                     </div>

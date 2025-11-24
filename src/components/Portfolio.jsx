@@ -64,7 +64,7 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                                             onClick={() => onProjectClick(p)}
                                             className="group bg-[var(--card)] rounded-xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer transition-all duration-300 w-full flex flex-col border border-transparent hover:border-[var(--accent)]/20"
                                         >
-                                            <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white overflow-hidden relative">
+                                            <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-[var(--surface-muted)] overflow-hidden relative">
                                                 <img 
                                                     src={p.img} 
                                                     alt={`${p.title} - проект веб-разработки от WebNexum`} 
@@ -96,7 +96,7 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                         {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
                         <button
                             onClick={() => setCurrentIndex((prev) => (prev === 0 ? portfolio.length - 1 : prev - 1))}
-                            className="carousel-nav-btn hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 z-20 items-center justify-center"
+                            className="carousel-nav-btn hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 z-20 items-center justify-center shadow-[0_15px_30px_var(--button-primary-shadow)]"
                             aria-label="Previous project"
                         >
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +105,7 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                         </button>
                         <button
                             onClick={() => setCurrentIndex((prev) => (prev === portfolio.length - 1 ? 0 : prev + 1))}
-                            className="carousel-nav-btn hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 z-20 items-center justify-center"
+                            className="carousel-nav-btn hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 z-20 items-center justify-center shadow-[0_15px_30px_var(--button-primary-shadow)]"
                             aria-label="Next project"
                         >
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

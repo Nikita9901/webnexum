@@ -10,7 +10,7 @@ export function Toast({ toast, toastType, t, onClose }) {
                 flex items-start gap-3 sm:gap-4 max-w-sm
                 backdrop-blur-sm border-2
                 ${toastType === 'success' 
-                    ? 'bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white border-white/20' 
+                    ? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white border-white/20 shadow-[0_18px_30px_var(--button-primary-shadow)]' 
                     : 'bg-gradient-to-r from-red-500 to-red-600 text-white border-white/20'
                 }
             `}>

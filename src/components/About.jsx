@@ -1,7 +1,7 @@
 import React from 'react';
 import { smoothScrollTo } from '../utils/smoothScroll';
 
-export function About({ t }) {
+export function About({ t, theme = 'light' }) {
     return (
         <section id="about" className="mt-20">
             <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -34,7 +34,7 @@ export function About({ t }) {
 
                 {/* О нас */}
                 <div className="relative h-full">
-                    <div className="p-8 md:p-10 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] rounded-2xl shadow-2xl text-white relative overflow-hidden h-full flex flex-col">
+                <div className="p-8 md:p-10 bg-gradient-to-br from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] rounded-2xl shadow-2xl text-white relative overflow-hidden h-full flex flex-col shadow-[0_30px_60px_var(--button-primary-shadow)]">
                         {/* Декоративные элементы */}
                         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-xl"></div>
                         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 blur-xl"></div>
@@ -46,9 +46,11 @@ export function About({ t }) {
                                 {t.about.aboutText}
                             </p>
                             <div className="flex flex-wrap gap-3">
-                                <a href="#contact"
-                                   onClick={(e) => smoothScrollTo(e, 'contact')}
-                                   className="px-5 py-2.5 rounded-lg bg-white text-[var(--accent)] font-medium hover:bg-white/90 transition-all shadow-md hover:shadow-lg">
+                                <a
+                                    href="#contact"
+                                    onClick={(e) => smoothScrollTo(e, 'contact')}
+                                    className="px-5 py-2.5 rounded-lg bg-white text-[#4f85bf] font-medium transition-all shadow-md hover:bg-white/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
+                                >
                                     {t.about.contact}
                                 </a>
                                 <a href="#portfolio"

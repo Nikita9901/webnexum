@@ -13,7 +13,7 @@ export function ProjectModal({ project, onClose, t }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Project Image */}
-                <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white flex items-center justify-center overflow-hidden">
+                <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-[var(--surface-muted)] flex items-center justify-center overflow-hidden">
                     {/* Close Button - positioned absolutely over image */}
                     <button
                         onClick={onClose}

@@ -19,6 +19,10 @@ import "./styles/global.css";
 
 export default function WebNexumLanding() {
     const { language, changeLanguage, t } = useLanguage();
+    const [theme, setTheme] = useState(() => {
+        if (typeof window === 'undefined') return 'light';
+        return localStorage.getItem('wn-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    });
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -45,6 +49,17 @@ export default function WebNexumLanding() {
     ], [t, language]);
     
     const sectionRefs = useRef({});
+
+    const toggleTheme = () => {
+        setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    };
+
+    useEffect(() => {
+        if (typeof document === 'undefined') return;
+        const root = document.documentElement;
+        root.setAttribute('data-theme', theme);
+        localStorage.setItem('wn-theme', theme);
+    }, [theme]);
 
     function showToast(text, type = 'success') {
         setToast(text);
@@ -279,13 +294,13 @@ export default function WebNexumLanding() {
                     setToastType('success');
                 }} 
             />
-            <Header language={language} t={t} changeLanguage={changeLanguage} />
+            <Header language={language} t={t} changeLanguage={changeLanguage} theme={theme} onToggleTheme={toggleTheme} />
             <main className="relative mx-auto max-w-6xl px-6 pb-12">
-                <Hero t={t} language={language} counters={counters} sectionRefs={sectionRefs} />
+                <Hero t={t} language={language} counters={counters} sectionRefs={sectionRefs} theme={theme} />
                 <Services t={t} language={language} servicesList={servicesList} sectionRefs={sectionRefs} />
                 <Process t={t} language={language} sectionRefs={sectionRefs} />
                 <Portfolio t={t} portfolio={portfolio} onProjectClick={setSelectedProject} />
-                <About t={t} />
+                <About t={t} theme={theme} />
                 <Contact t={t} form={form} handleChange={handleChange} handleSubmit={handleSubmit} sending={sending} language={language} />
                 <section id="faq" className="mt-20">
                     <h2 className="text-2xl font-semibold">{t.faq.title}</h2>
@@ -293,7 +308,7 @@ export default function WebNexumLanding() {
                 </section>
             </main>
 
-            <Footer t={t} language={language} />
+            <Footer t={t} language={language} theme={theme} />
             <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} t={t} />
 
             <BackToTop show={showBackToTop} onClick={scrollToTop} />

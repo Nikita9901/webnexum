@@ -4,10 +4,10 @@ import { CustomSelect } from '../atoms';
 export function Contact({ t, form, handleChange, handleSubmit, sending, language }) {
     return (
         <section id="contact" className="mt-20 mb-24">
-            <div className="max-w-5xl mx-auto bg-gradient-to-br from-[var(--card)] to-white rounded-xl md:rounded-2xl shadow-2xl overflow-hidden border border-[var(--bg)]">
+            <div className="max-w-5xl mx-auto bg-gradient-to-br from-[var(--card)] to-[var(--contact-panel-to)] rounded-xl md:rounded-2xl shadow-2xl overflow-hidden border border-[color:var(--card-border)]">
                 <div className="flex flex-col md:grid md:grid-cols-2 gap-0">
                     {/* Left Side - Contact Info */}
-                    <div className="bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] p-6 sm:p-8 md:p-10 text-white">
+                    <div className="bg-gradient-to-br from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] p-6 sm:p-8 md:p-10 text-white shadow-[0_25px_45px_var(--button-primary-shadow)]">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3">{t.contact.title}</h2>
                         <p className="text-white/90 mb-6 sm:mb-8 text-base sm:text-lg">{t.contact.description}</p>
 
@@ -50,7 +50,7 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                     </div>
 
                     {/* Right Side - Form */}
-                    <div className="p-6 sm:p-8 md:p-10 bg-[var(--card)]">
+                    <div className="p-6 sm:p-8 md:p-10 bg-[var(--contact-form-bg)]">
                         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                             <div>
                                 <label className="block text-sm font-medium text-[var(--text)] mb-2">{t.contact.name}</label>
@@ -60,7 +60,7 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                     onChange={handleChange} 
                                     required
                                     placeholder={t.contact.namePlaceholder} 
-                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 text-sm sm:text-base hover:border-[var(--accent)]/50"
+                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[color:var(--card-border)] bg-[var(--input-bg)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 text-sm sm:text-base hover:border-[var(--accent)]/50 hover:bg-[var(--input-hover-bg)]"
                                 />
                             </div>
                             
@@ -81,7 +81,7 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                                 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 sm:py-3.5 rounded-lg border-2 cursor-pointer transition-all duration-300 text-center group
                                                 ${form.connect === opt.value 
                                                     ? "border-[var(--accent)] bg-gradient-to-br from-[var(--accent)]/10 to-[var(--accent-2)]/10 shadow-lg scale-105" 
-                                                    : "border-[var(--muted)]/30 bg-white hover:border-[var(--accent)]/50 hover:bg-[var(--bg)] hover:scale-105"
+                                                    : "border-[color:var(--card-border)] bg-[var(--input-bg)] hover:border-[var(--accent)]/60 hover:bg-[var(--input-hover-bg)] hover:scale-105"
                                                 }
                                             `}
                                         >
@@ -112,7 +112,7 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                         onChange={handleChange}
                                         type={form.connect === 'phone' || form.connect === 'viber' ? "tel" : form.connect === 'email' ? 'email' : 'text'}
                                         placeholder={form.connect === 'phone' ? t.contact.phonePlaceholder : form.connect === 'email' ? t.contact.emailPlaceholder : form.connect === 'viber' ? t.contact.viberPlaceholder : '@username'}
-                                        className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 text-sm sm:text-base hover:border-[var(--accent)]/50"
+                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[color:var(--card-border)] bg-[var(--input-bg)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 text-sm sm:text-base hover:border-[var(--accent)]/50 hover:bg-[var(--input-hover-bg)]"
                                     />
                                 </div>
                                 <div>
@@ -141,14 +141,14 @@ export function Contact({ t, form, handleChange, handleSubmit, sending, language
                                     onChange={handleChange}
                                     placeholder={t.contact.messagePlaceholder} 
                                     rows={4}
-                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[var(--muted)]/30 bg-white focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 resize-none text-sm sm:text-base hover:border-[var(--accent)]/50"
+                                    className="w-full px-4 py-3 sm:py-3.5 rounded-lg border-2 border-[color:var(--card-border)] bg-[var(--input-bg)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all duration-300 resize-none text-sm sm:text-base hover:border-[var(--accent)]/50 hover:bg-[var(--input-hover-bg)]"
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={sending}
-                                className="w-full px-6 py-4 sm:py-5 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-lg font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-base sm:text-lg group"
+                                className="w-full px-6 py-4 sm:py-5 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white rounded-lg font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-base sm:text-lg group shadow-[0_25px_40px_var(--button-primary-shadow)]"
                             >
                                 {sending ? (
                                     <>

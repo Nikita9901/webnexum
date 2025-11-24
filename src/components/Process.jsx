@@ -18,7 +18,7 @@ export function Process({ t, language, sectionRefs }) {
 
             <div className="mt-6 relative">
                 {/* Timeline line for desktop */}
-                <div className="hidden md:block absolute left-6 top-7 bottom-12 w-0.5 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]"></div>
+                <div className="hidden md:block absolute left-6 top-7 bottom-12 w-0.5 bg-gradient-to-b from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)]"></div>
 
                 <div className="space-y-4 md:space-y-6">
                     {[
@@ -35,7 +35,7 @@ export function Process({ t, language, sectionRefs }) {
                         >
                             {/* Step number circle */}
                             <div className="flex-shrink-0 relative z-10 flex items-center justify-center sm:justify-start">
-                                <div className="md:-ml-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110">
+                                <div className="md:-ml-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110 shadow-[0_12px_24px_var(--button-primary-shadow)]">
 
                                     <span className="text-white font-bold text-xs sm:text-sm md:text-base">{item.step}</span>
                                     </div>
