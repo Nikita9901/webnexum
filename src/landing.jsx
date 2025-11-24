@@ -21,6 +21,7 @@ export default function WebNexumLanding() {
     });
     const [sending, setSending] = useState(false);
     const [toast, setToast] = useState(null);
+    const [toastType, setToastType] = useState('success'); // 'success' or 'error'
     const [currentPortfolioIndex, setCurrentPortfolioIndex] = useState(0);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
@@ -35,9 +36,13 @@ export default function WebNexumLanding() {
     const animationRef = useRef(null);
     const sectionRefs = useRef({});
 
-    function showToast(text) {
+    function showToast(text, type = 'success') {
         setToast(text);
-        setTimeout(() => setToast(null), 3500);
+        setToastType(type);
+        setTimeout(() => {
+            setToast(null);
+            setToastType('success');
+        }, 4000);
     }
 
     function smoothScrollTo(e, targetId) {
@@ -463,15 +468,19 @@ export default function WebNexumLanding() {
             );
             if (res.ok) {
                 setSending(false);
-                showToast("Заявка отправлена — спасибо! Мы ответим в ближайшее время.");
+                showToast("Заявка отправлена — спасибо! Мы ответим в ближайшее время.", 'success');
                 setForm({name: "", email: "", phone: "", projectType: "website", message: "", connect: 'telegram', telegram: '', viber: ''});
             } else {
-                throw new Error('Failed to send message to Telegram');
+                throw new Error('API_ERROR');
             }
         } catch (error) {
             console.error('Error:', error);
+            setSending(false);
+            showToast(
+                "Не удалось отправить заявку. Пожалуйста, свяжитесь с нами напрямую: support@webnexum.com или @webnexum в Telegram.",
+                'error'
+            );
         }
-        setSending(false);
     }
 
     return (
@@ -490,12 +499,130 @@ export default function WebNexumLanding() {
         section[id] {
           scroll-margin-top: 80px;
         }
+        
+        /* Скрытый текст для SEO (screen reader only) */
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
+        }
+        
+        /* Toast animations */
+        @keyframes slideInRight {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes slideOutRight {
+          from {
+            transform: translateX(0);
+            opacity: 1;
+          }
+          to {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes scaleIn {
+          from {
+            transform: scale(0.8);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+        
+        .toast-enter {
+          animation: slideInRight 0.3s ease-out, scaleIn 0.3s ease-out;
+        }
+        
+        .toast-exit {
+          animation: slideOutRight 0.3s ease-in;
+        }
+        
+        @keyframes progress {
+          from {
+            width: 100%;
+          }
+          to {
+            width: 0%;
+          }
+        }
       `}</style>
             {toast && (
-                <div className="fixed top-6 right-6 z-[9999] animate-fadeIn">
-                    <div className="px-5 py-3 bg-[var(--accent)] text-white rounded-lg shadow-lg flex items-center gap-3">
-                        <span className="text-xl">✓</span>
-                        <span className="font-medium">{toast}</span>
+                <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[9999] toast-enter">
+                    <div className={`
+                        relative px-4 py-3 sm:px-5 sm:py-4 rounded-xl shadow-2xl 
+                        flex items-start gap-3 sm:gap-4 max-w-sm
+                        backdrop-blur-sm border-2
+                        ${toastType === 'success' 
+                            ? 'bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white border-white/20' 
+                            : 'bg-gradient-to-r from-red-500 to-red-600 text-white border-white/20'
+                        }
+                    `}>
+                        <div className={`
+                            flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full 
+                            flex items-center justify-center
+                            ${toastType === 'success' 
+                                ? 'bg-white/20' 
+                                : 'bg-white/20'
+                            }
+                        `}>
+                            {toastType === 'success' ? (
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                            ) : (
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm sm:text-base leading-tight">
+                                {toastType === 'success' ? 'Успешно!' : 'Ошибка'}
+                            </p>
+                            <p className="text-xs sm:text-sm mt-1 opacity-95 leading-relaxed">
+                                {toast}
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => {
+                                setToast(null);
+                                setToastType('success');
+                            }}
+                            className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
+                            aria-label="Закрыть"
+                        >
+                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        {/* Progress bar */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 rounded-b-xl overflow-hidden">
+                            <div 
+                                className="h-full bg-white"
+                                style={{
+                                    animation: 'progress 4s linear forwards',
+                                    width: '100%'
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             )}
@@ -516,7 +643,7 @@ export default function WebNexumLanding() {
                         <a href="#about" onClick={(e) => smoothScrollTo(e, 'about')} className="hover:text-[var(--text)]" aria-label="О веб-студии WebNexum">О нас</a>
                         <a href="#contact"
                            onClick={(e) => smoothScrollTo(e, 'contact')}
-                           className="px-4 py-2 rounded bg-[var(--accent)] text-white hover:brightness-110"
+                           className="px-4 py-2 rounded bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white hover:brightness-110 transition-all"
                            aria-label="Заказать разработку сайта">Оставить заявку</a>
                     </nav>
                 </div>
@@ -532,11 +659,29 @@ export default function WebNexumLanding() {
                         <p className="mt-4 text-lg text-[var(--muted)] max-w-prose">
                             <strong>WebNexum</strong> — веб-студия в Минске. Разрабатываем <strong>сайты под ключ</strong>, веб-приложения и корпоративные решения. От идеи до поддержки.
                         </p>
+                        
+                        {/* Скрытый SEO текст */}
+                        <div className="sr-only">
+                            <h2>Веб-разработка в Минске</h2>
+                            <p>WebNexum — профессиональная веб-студия в Минске, специализирующаяся на разработке сайтов под ключ, создании веб-приложений и корпоративных решений. Мы предлагаем полный цикл разработки: от анализа требований до запуска и поддержки проекта. Наши услуги включают создание корпоративных сайтов, лендингов, интернет-магазинов, веб-приложений (SaaS), CRM-систем и кастомного программного обеспечения. Работаем с современными технологиями: React, Node.js, TypeScript, Next.js, Django, Flask. Разработка сайта под ключ в Минске с гарантией качества и прозрачными процессами. Заказать разработку сайта можно через форму обратной связи или связавшись с нами напрямую.</p>
+                            <h3>Услуги веб-разработки</h3>
+                            <ul>
+                                <li>Разработка корпоративных сайтов в Минске</li>
+                                <li>Создание лендингов и одностраничных сайтов</li>
+                                <li>Разработка интернет-магазинов и e-commerce платформ</li>
+                                <li>Создание веб-приложений и SaaS-решений</li>
+                                <li>Разработка CRM-систем и внутренних корпоративных систем</li>
+                                <li>Мобильная адаптация и PWA разработка</li>
+                                <li>UI/UX дизайн и прототипирование</li>
+                                <li>Техническая поддержка и сопровождение проектов</li>
+                            </ul>
+                            <p>Веб-студия WebNexum работает с клиентами в Минске и по всей Беларуси. Мы создаем современные, быстрые и функциональные веб-решения, которые помогают бизнесу расти. Разработка сайта под ключ включает дизайн, верстку, программирование, тестирование и запуск проекта. Стоимость разработки сайта зависит от сложности проекта и объема работ. Свяжитесь с нами для получения детальной оценки вашего проекта.</p>
+                        </div>
 
                         <div className="mt-6 flex gap-4">
                             <a href="#contact"
                                onClick={(e) => smoothScrollTo(e, 'contact')}
-                               className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent)] text-white rounded-md shadow hover:brightness-110">Оставить
+                               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-md shadow hover:brightness-110 transition-all">Оставить
                                 заявку</a>
                             <a href="#portfolio"
                                onClick={(e) => smoothScrollTo(e, 'portfolio')}
@@ -623,6 +768,11 @@ export default function WebNexumLanding() {
                         Полный цикл <strong>разработки сайтов под ключ</strong>: анализ, дизайн, разработка, тестирование и поддержка.
                     </p>
 
+                    {/* Скрытый SEO текст для услуг */}
+                    <div className="sr-only">
+                        <p>Веб-студия WebNexum в Минске предлагает полный спектр услуг по разработке сайтов и веб-приложений. Разработка сайта под ключ включает создание лендингов, корпоративных сайтов, интернет-магазинов. Разработка веб-приложений включает создание SaaS-платформ, панелей управления и кастомных решений. Мобильные решения: PWA разработка, интеграции, адаптивная верстка. Дизайн и бренд: UI/UX дизайн, прототипирование, разработка айдентики.</p>
+                    </div>
+
                     <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             {title: "Разработка сайтов", desc: "Лендинги, корпоративные сайты, интернет-магазины"},
@@ -653,6 +803,11 @@ export default function WebNexumLanding() {
                 >
                     <h2 className="text-2xl font-semibold animate-on-scroll">Как мы работаем</h2>
                     <p className="text-[var(--muted)] mt-2 max-w-prose animate-on-scroll" style={{ transitionDelay: '0.1s' }}>Прозрачный процесс разработки от первого контакта до запуска проекта.</p>
+                    
+                    {/* Скрытый SEO текст для процесса работы */}
+                    <div className="sr-only">
+                        <p>Процесс разработки сайта в веб-студии WebNexum включает пять основных этапов: обсуждение и анализ требований, прототипирование и дизайн, разработка по Agile методологии, тестирование и запуск, поддержка и развитие проекта. Мы работаем прозрачно, с регулярными демо и отчетами для клиента. Каждый этап согласовывается перед переходом к следующему.</p>
+                    </div>
 
                     <div className="mt-6 relative">
                         {/* Timeline line for desktop */}
@@ -730,6 +885,11 @@ export default function WebNexumLanding() {
                 <section id="portfolio" className="mt-20">
                     <h2 className="text-2xl font-semibold">Портфолио</h2>
                     <p className="text-[var(--muted)] mt-2">Примеры проектов — кликайте для деталей.</p>
+                    
+                    {/* Скрытый SEO текст для портфолио */}
+                    <div className="sr-only">
+                        <p>Портфолио веб-студии WebNexum включает примеры успешно реализованных проектов: корпоративные сайты, лендинги, интернет-магазины, веб-приложения и SaaS-платформы. Каждый проект в портфолио демонстрирует наш подход к решению бизнес-задач клиентов через веб-технологии. Мы работаем с различными отраслями: e-commerce, образование, медицина, финансы, технологии. Разработка сайта под ключ с учетом специфики бизнеса клиента.</p>
+                    </div>
 
                     <div className="mt-6 relative">
                         <div className="flex justify-center">
@@ -755,7 +915,7 @@ export default function WebNexumLanding() {
                                                     className="bg-[var(--card)] rounded-lg shadow hover:shadow-md overflow-hidden cursor-pointer transition-all w-full flex flex-col"
                                                 >
                                                     <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white overflow-hidden">
-                                                        <img src={p.img} alt={p.title} loading="lazy" className="w-full h-full object-cover"/>
+                                                        <img src={p.img} alt={`${p.title} - проект веб-разработки от WebNexum`} loading="lazy" className="w-full h-full object-cover"/>
                                                     </div>
                                                     <div className="p-4 sm:p-6 flex-1 flex flex-col">
                                                         <div className="flex items-start justify-between gap-2">
@@ -791,7 +951,7 @@ export default function WebNexumLanding() {
                                 {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
                                 <button
                                     onClick={() => setCurrentPortfolioIndex((prev) => (prev === 0 ? portfolio.length - 1 : prev - 1))}
-                                    className="hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[var(--accent)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
+                                    className="hidden md:flex absolute left-[-10px] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
                                     aria-label="Previous project"
                                 >
                                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -800,7 +960,7 @@ export default function WebNexumLanding() {
                                 </button>
                                 <button
                                     onClick={() => setCurrentPortfolioIndex((prev) => (prev === portfolio.length - 1 ? 0 : prev + 1))}
-                                    className="hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-[var(--accent)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
+                                    className="hidden md:flex absolute right-[-10px] top-1/2 -translate-y-1/2 translate-x-1/2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 shadow-lg hover:shadow-xl hover:brightness-110 transition-all hover:scale-110 z-20 items-center justify-center"
                                     aria-label="Next project"
                                 >
                                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -834,6 +994,12 @@ export default function WebNexumLanding() {
                         {/* Почему выбирают нас */}
                         <div>
                             <h2 className="text-2xl font-semibold mb-6">Почему выбирают нас</h2>
+                            
+                            {/* Скрытый SEO текст */}
+                            <div className="sr-only">
+                                <p>Веб-студия WebNexum в Минске — это опытная команда senior и middle разработчиков с опытом реализации enterprise задач. Мы предлагаем прозрачные процессы разработки с гибким подходом (Agile), регулярными демо и отчетами. После релиза обеспечиваем техническую поддержку и сопровождение проекта. Разработка сайта под ключ с гарантией качества и соблюдением сроков.</p>
+                            </div>
+                            
                             <div className="space-y-4">
                                 <div className="p-5 bg-[var(--card)] rounded-lg shadow-sm hover:shadow-md transition-all card-hover border-l-4 border-[var(--accent)]">
                                     <h3 className="font-semibold text-[var(--text)] mb-2">Опытная команда</h3>
@@ -1136,7 +1302,7 @@ export default function WebNexumLanding() {
                         <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-white flex items-center justify-center overflow-hidden">
                             <img 
                                 src={selectedProject.img} 
-                                alt={selectedProject.title} 
+                                alt={`${selectedProject.title} - пример работы веб-студии WebNexum в Минске`} 
                                 className="w-full h-full object-cover"
                             />
                         </div>
@@ -1166,7 +1332,7 @@ export default function WebNexumLanding() {
                                         href={selectedProject.href} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[var(--accent)] text-white rounded-md hover:brightness-110 transition"
+                                        className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-md hover:brightness-110 transition-all"
                                     >
                                         Открыть проект
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1213,7 +1379,7 @@ export default function WebNexumLanding() {
             {showBackToTop && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 bg-[var(--accent)] hover:bg-[var(--accent-2)] text-white rounded-full p-3 md:p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
+                    className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white rounded-full p-3 md:p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
                     aria-label="Вернуться наверх"
                 >
                     <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1221,6 +1387,177 @@ export default function WebNexumLanding() {
                     </svg>
                 </button>
             )}
+
+            {/* Структурированные данные для SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebSite",
+                        "name": "WebNexum",
+                        "url": "https://webnexum.com",
+                        "description": "Разработка сайтов в Минске под ключ. Веб-студия WebNexum создает корпоративные сайты, лендинги, интернет-магазины и веб-приложения.",
+                        "potentialAction": {
+                            "@type": "SearchAction",
+                            "target": "https://webnexum.com/?s={search_term_string}",
+                            "query-input": "required name=search_term_string"
+                        }
+                    })
+                }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Service",
+                        "serviceType": "Веб-разработка",
+                        "provider": {
+                            "@type": "LocalBusiness",
+                            "name": "WebNexum",
+                            "address": {
+                                "@type": "PostalAddress",
+                                "addressLocality": "Минск",
+                                "addressCountry": "BY"
+                            }
+                        },
+                        "areaServed": {
+                            "@type": "Country",
+                            "name": "Беларусь"
+                        },
+                        "hasOfferCatalog": {
+                            "@type": "OfferCatalog",
+                            "name": "Услуги веб-разработки",
+                            "itemListElement": [
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Разработка сайтов",
+                                        "description": "Создание лендингов, корпоративных сайтов, интернет-магазинов"
+                                    }
+                                },
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Разработка веб-приложений",
+                                        "description": "Создание SaaS-платформ, панелей управления, кастомных решений"
+                                    }
+                                },
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Мобильные решения",
+                                        "description": "PWA разработка, интеграции, адаптивная верстка"
+                                    }
+                                },
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Дизайн и бренд",
+                                        "description": "UI/UX дизайн, прототипирование, разработка айдентики"
+                                    }
+                                }
+                            ]
+                        }
+                    })
+                }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        "mainEntity": [
+                            {
+                                "@type": "Question",
+                                "name": "Что входит в создание сайта?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Разработка дизайна, верстка, React-приложение, серверная часть, админка, SEO-настройка и публикация. Полный цикл от идеи до запуска."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Сколько длится разработка?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "От 5–7 дней для простых сайтов до 8-9 недель для полноценных проектов с функционалом. Точные сроки определяются после анализа требований."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Как формируется стоимость проекта?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Стоимость зависит от объема работ, сложности функционала и сроков. После обсуждения требований мы предоставляем детальную оценку. Работаем с фиксированной стоимостью по договору."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Какие технологии вы используете?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Основной стек: React, Node.js, TypeScript, PostgreSQL/MongoDB. Также работаем с Next.js, Express, Django, Flask. Выбираем технологии под конкретную задачу."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Даете ли вы поддержку?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Да, предоставляем техподдержку, обновления и сопровождение проекта. Включаем 3 месяца бесплатной поддержки после запуска, далее — по договоренности."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Можно ли доработать существующий проект?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Конечно. Работаем с проектами на любых технологиях. Можем добавить функционал, переработать дизайн, оптимизировать производительность или мигрировать на современный стек."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Как проходит процесс работы?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Обсуждение требований → Техническое задание → Дизайн и прототипы → Разработка с регулярными демо → Тестирование → Запуск. Работаем по Agile с прозрачной коммуникацией."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Какие гарантии вы предоставляете?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Гарантируем соответствие техническому заданию, исправление багов в течение гарантийного периода, передачу исходного кода и документации. Все фиксируется в договоре."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Как происходит оплата?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Обычно работаем по схеме: 30% предоплата, 40% по готовности основной части, 30% после запуска. Возможны индивидуальные условия для крупных проектов."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                "name": "Работаете ли вы с зарубежными клиентами?",
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": "Да, работаем удаленно с клиентами по всему миру. Используем современные инструменты для коммуникации и управления проектами. Гибкий график работы."
+                                }
+                            }
+                        ]
+                    })
+                }}
+            />
         </div>
     );
 }
