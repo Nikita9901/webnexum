@@ -58,53 +58,99 @@ export function FAQItem({ question, answer }) {
     );
 }
 
-export function FAQ() {
-    const faqList = [
-        {
-            q: "Что входит в создание сайта?",
-            a: "Разработка дизайна, верстка, React-приложение, серверная часть, админка, SEO-настройка и публикация. Полный цикл от идеи до запуска."
-        },
-        {
-            q: "Сколько длится разработка?",
-            a: "От 5–7 дней для простых сайтов до 8-9 недель для полноценных проектов с функционалом. Точные сроки определяются после анализа требований."
-        },
-        {
-            q: "Как формируется стоимость проекта?",
-            a: "Стоимость зависит от объема работ, сложности функционала и сроков. После обсуждения требований мы предоставляем детальную оценку. Работаем с фиксированной стоимостью по договору."
-        },
-        {
-            q: "Какие технологии вы используете?",
-            a: "Основной стек: React, Node.js, TypeScript, PostgreSQL/MongoDB. Также работаем с Next.js, Express, Django, Flask. Выбираем технологии под конкретную задачу."
-        },
-        {
-            q: "Даете ли вы поддержку?",
-            a: "Да, предоставляем техподдержку, обновления и сопровождение проекта. Включаем 3 месяца бесплатной поддержки после запуска, далее — по договоренности."
-        },
-        {
-            q: "Можно ли доработать существующий проект?",
-            a: "Конечно. Работаем с проектами на любых технологиях. Можем добавить функционал, переработать дизайн, оптимизировать производительность или мигрировать на современный стек."
-        },
-        {
-            q: "Как проходит процесс работы?",
-            a: "Обсуждение требований → Техническое задание → Дизайн и прототипы → Разработка с регулярными демо → Тестирование → Запуск. Работаем по Agile с прозрачной коммуникацией."
-        },
-        {
-            q: "Какие гарантии вы предоставляете?",
-            a: "Гарантируем соответствие техническому заданию, исправление багов в течение гарантийного периода, передачу исходного кода и документации. Все фиксируется в договоре."
-        },
-        {
-            q: "Как происходит оплата?",
-            a: "Обычно работаем по схеме: 30% предоплата, 40% по готовности основной части, 30% после запуска. Возможны индивидуальные условия для крупных проектов."
-        },
-        {
-            q: "Работаете ли вы с зарубежными клиентами?",
-            a: "Да, работаем удаленно с клиентами по всему миру. Используем современные инструменты для коммуникации и управления проектами. Гибкий график работы."
-        }
-    ];
+export function FAQ({ language = 'ru' }) {
+    const faqList = {
+        ru: [
+            {
+                q: "Что входит в создание сайта?",
+                a: "Разработка дизайна, верстка, React-приложение, серверная часть, админка, SEO-настройка и публикация. Полный цикл от идеи до запуска."
+            },
+            {
+                q: "Сколько длится разработка?",
+                a: "От 5–7 дней для простых сайтов до 8-9 недель для полноценных проектов с функционалом. Точные сроки определяются после анализа требований."
+            },
+            {
+                q: "Как формируется стоимость проекта?",
+                a: "Стоимость зависит от объема работ, сложности функционала и сроков. После обсуждения требований мы предоставляем детальную оценку. Работаем с фиксированной стоимостью по договору."
+            },
+            {
+                q: "Какие технологии вы используете?",
+                a: "Основной стек: React, Node.js, TypeScript, PostgreSQL/MongoDB. Также работаем с Next.js, Express, Django, Flask. Выбираем технологии под конкретную задачу."
+            },
+            {
+                q: "Даете ли вы поддержку?",
+                a: "Да, предоставляем техподдержку, обновления и сопровождение проекта. Включаем 3 месяца бесплатной поддержки после запуска, далее — по договоренности."
+            },
+            {
+                q: "Можно ли доработать существующий проект?",
+                a: "Конечно. Работаем с проектами на любых технологиях. Можем добавить функционал, переработать дизайн, оптимизировать производительность или мигрировать на современный стек."
+            },
+            {
+                q: "Как проходит процесс работы?",
+                a: "Обсуждение требований → Техническое задание → Дизайн и прототипы → Разработка с регулярными демо → Тестирование → Запуск. Работаем по Agile с прозрачной коммуникацией."
+            },
+            {
+                q: "Какие гарантии вы предоставляете?",
+                a: "Гарантируем соответствие техническому заданию, исправление багов в течение гарантийного периода, передачу исходного кода и документации. Все фиксируется в договоре."
+            },
+            {
+                q: "Как происходит оплата?",
+                a: "Обычно работаем по схеме: 30% предоплата, 40% по готовности основной части, 30% после запуска. Возможны индивидуальные условия для крупных проектов."
+            },
+            {
+                q: "Работаете ли вы с зарубежными клиентами?",
+                a: "Да, работаем удаленно с клиентами по всему миру. Используем современные инструменты для коммуникации и управления проектами. Гибкий график работы."
+            }
+        ],
+        en: [
+            {
+                q: "What's included in website creation?",
+                a: "Design development, layout, React application, server-side, admin panel, SEO setup and publication. Full cycle from idea to launch."
+            },
+            {
+                q: "How long does development take?",
+                a: "From 5-7 days for simple sites to 8-9 weeks for full-featured projects. Exact timelines are determined after requirements analysis."
+            },
+            {
+                q: "How is project cost determined?",
+                a: "Cost depends on scope of work, functionality complexity and timelines. After discussing requirements, we provide a detailed estimate. We work with fixed cost per contract."
+            },
+            {
+                q: "What technologies do you use?",
+                a: "Main stack: React, Node.js, TypeScript, PostgreSQL/MongoDB. We also work with Next.js, Express, Django, Flask. We choose technologies for specific tasks."
+            },
+            {
+                q: "Do you provide support?",
+                a: "Yes, we provide technical support, updates and project maintenance. We include 3 months of free support after launch, then — by agreement."
+            },
+            {
+                q: "Can you improve an existing project?",
+                a: "Of course. We work with projects on any technologies. We can add functionality, redesign, optimize performance or migrate to a modern stack."
+            },
+            {
+                q: "How does the work process go?",
+                a: "Requirements discussion → Technical specification → Design and prototypes → Development with regular demos → Testing → Launch. We work using Agile with transparent communication."
+            },
+            {
+                q: "What guarantees do you provide?",
+                a: "We guarantee compliance with technical specifications, bug fixes during warranty period, transfer of source code and documentation. Everything is fixed in the contract."
+            },
+            {
+                q: "How does payment work?",
+                a: "Usually we work with the scheme: 30% prepayment, 40% when main part is ready, 30% after launch. Individual conditions are possible for large projects."
+            },
+            {
+                q: "Do you work with international clients?",
+                a: "Yes, we work remotely with clients worldwide. We use modern tools for communication and project management. Flexible work schedule."
+            }
+        ]
+    };
+
+    const currentFaqList = faqList[language] || faqList.ru;
 
     return (
         <div className="max-w-3xl mx-auto mt-10">
-            {faqList.map((item, i) => (
+            {currentFaqList.map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
             ))}
         </div>
