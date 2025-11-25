@@ -61,6 +61,51 @@ export default function WebNexumLanding() {
         localStorage.setItem('wn-theme', theme);
     }, [theme]);
 
+    // Обновление lang атрибута и meta тегов для SEO
+    useEffect(() => {
+        if (typeof document === 'undefined') return;
+        document.documentElement.lang = language;
+        
+        // Обновляем title
+        document.title = t.seo.title;
+        
+        // Обновляем meta description
+        let metaDescription = document.querySelector('meta[name="description"]');
+        if (!metaDescription) {
+            metaDescription = document.createElement('meta');
+            metaDescription.setAttribute('name', 'description');
+            document.head.appendChild(metaDescription);
+        }
+        metaDescription.setAttribute('content', t.seo.description);
+        
+        // Обновляем og:title
+        let ogTitle = document.querySelector('meta[property="og:title"]');
+        if (!ogTitle) {
+            ogTitle = document.createElement('meta');
+            ogTitle.setAttribute('property', 'og:title');
+            document.head.appendChild(ogTitle);
+        }
+        ogTitle.setAttribute('content', t.seo.title);
+        
+        // Обновляем og:description
+        let ogDescription = document.querySelector('meta[property="og:description"]');
+        if (!ogDescription) {
+            ogDescription = document.createElement('meta');
+            ogDescription.setAttribute('property', 'og:description');
+            document.head.appendChild(ogDescription);
+        }
+        ogDescription.setAttribute('content', t.seo.description);
+        
+        // Обновляем og:locale в зависимости от языка
+        let ogLocale = document.querySelector('meta[property="og:locale"]');
+        if (!ogLocale) {
+            ogLocale = document.createElement('meta');
+            ogLocale.setAttribute('property', 'og:locale');
+            document.head.appendChild(ogLocale);
+        }
+        ogLocale.setAttribute('content', language === 'ru' ? 'ru_RU' : 'en_US');
+    }, [language, t]);
+
     function showToast(text, type = 'success') {
         setToast(text);
         setToastType(type);
@@ -321,8 +366,10 @@ export default function WebNexumLanding() {
                         "@context": "https://schema.org",
                         "@type": "WebSite",
                         "name": "WebNexum",
+                        "alternateName": ["Веб-студия WebNexum", "WebNexum Web Studio"],
                         "url": "https://webnexum.com",
-                        "description": "Разработка сайтов в Минске под ключ. Веб-студия WebNexum создает корпоративные сайты, лендинги, интернет-магазины и веб-приложения.",
+                        "description": t.seo.description,
+                        "inLanguage": ["ru", "en"],
                         "potentialAction": {
                             "@type": "SearchAction",
                             "target": "https://webnexum.com/?s={search_term_string}",
@@ -338,9 +385,11 @@ export default function WebNexumLanding() {
                         "@context": "https://schema.org",
                         "@type": "Service",
                         "serviceType": "Веб-разработка",
+                        "inLanguage": ["ru", "en"],
                         "provider": {
                             "@type": "LocalBusiness",
                             "name": "WebNexum",
+                            "alternateName": ["Веб-студия WebNexum", "WebNexum Web Studio"],
                             "address": {
                                 "@type": "PostalAddress",
                                 "addressLocality": "Минск",

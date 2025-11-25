@@ -7,6 +7,10 @@ export const translations = {
             about: "О нас",
             contact: "Оставить заявку"
         },
+        seo: {
+            title: "Разработка сайтов в Минске под ключ | WebNexum — веб-студия",
+            description: "Разработка сайтов в Минске под ключ. Создание веб-приложений, корпоративных сайтов, лендингов и интернет-магазинов. Профессиональная веб-разработка с гарантией качества. WebNexum — ваша веб-студия в Минске."
+        },
         hero: {
             title: "Разработка сайтов",
             titleSuffix: "в Минске под ключ",
@@ -149,6 +153,10 @@ export const translations = {
             portfolio: "Portfolio",
             about: "About",
             contact: "Contact Us"
+        },
+        seo: {
+            title: "Website Development in Minsk Turnkey | WebNexum — Web Studio",
+            description: "Website development in Minsk turnkey. Creating web applications, corporate websites, landing pages and online stores. Professional web development with quality guarantee. WebNexum — your web studio in Minsk."
         },
         hero: {
             title: "Website Development",
