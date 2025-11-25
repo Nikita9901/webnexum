@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://webnexum.com/sitemap.xml
+
+# Блокируем служебные файлы
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /node_modules/
+
+# Разрешаем все остальное
+Allow: /
+
