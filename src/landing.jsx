@@ -2,6 +2,9 @@ import React, {useState, useRef, useEffect, useMemo} from "react";
 import project1Img from "./assets/project1.png";
 import project2Img from "./assets/project2.png";
 import project3Img from "./assets/project3.png";
+import project4Img from "./assets/project4.png";
+import project5Img from "./assets/project5.png";
+import project6Img from "./assets/project6.png";
 import {FAQ} from "./atoms.jsx";
 import { useLanguage } from "./hooks/useLanguage";
 import { Header } from "./components/Header";
@@ -251,23 +254,23 @@ export default function WebNexumLanding() {
     const portfolio = useMemo(() => [
         {
             id: 1,
-            title: t.projects.project2.title,
+            title: t.projects.project1.title,
             tags: ["Next.js", "Express.js"],
-            desc: t.projects.project2.desc,
-            img: project2Img,
+            desc: t.projects.project1.desc,
+            img: project1Img,
             href: "https://vendettacity.org",
-            problem: t.projects.project2.problem,
-            whatWeDid: t.projects.project2.whatWeDid
+            problem: t.projects.project1.problem,
+            whatWeDid: t.projects.project1.whatWeDid
         },
         {
             id: 2,
-            title: t.projects.project1.title,
-            tags: ["React", "Flask", "MongoDB"],
-            desc: t.projects.project1.desc,
-            img: project1Img,
-            href: "https://zignaly.com",
-            problem: t.projects.project1.problem,
-            whatWeDid: t.projects.project1.whatWeDid
+            title: t.projects.project2.title,
+            tags: ["React", "Node.js", "Bel Assist"],
+            desc: t.projects.project2.desc,
+            img: project2Img,
+            href: undefined,
+            problem: t.projects.project2.problem,
+            whatWeDid: t.projects.project2.whatWeDid
         },
         {
             id: 3,
@@ -279,6 +282,38 @@ export default function WebNexumLanding() {
             problem: t.projects.project3.problem,
             whatWeDid: t.projects.project3.whatWeDid
         },
+        // New placeholder items (images optional; fallback will be used)
+        {
+            id: 4,
+            title: t.projects.project4.title,
+            tags: ["Next.js", "YooKassa"],
+            desc: t.projects.project4.desc,
+            img: project4Img,
+            href: undefined,
+            problem: t.projects.project4.problem,
+            whatWeDid: t.projects.project4.whatWeDid
+        },
+        {
+            id: 5,
+            title: t.projects.project5.title,
+            tags: ["React", "Node.js"],
+            desc: t.projects.project5.desc,
+            img: project5Img,
+            href: undefined,
+            problem: t.projects.project5.problem,
+            whatWeDid: t.projects.project5.whatWeDid
+        },
+        {
+            id: 6,
+            title: t.projects.project6.title,
+            tags: ["React", "SEO"],
+            desc: t.projects.project6.desc,
+            img: project6Img,
+            href: undefined,
+            problem: t.projects.project6.problem,
+            whatWeDid: t.projects.project6.whatWeDid
+        },
+
     ], [t]);
 
 

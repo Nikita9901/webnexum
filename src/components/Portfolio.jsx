@@ -1,6 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { smoothScrollTo } from '../utils/smoothScroll';
 
+// Fallback placeholder image (SVG gradient) for projects without images
+const placeholderImg = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#0ea5e9"/>
+        <stop offset="1" stop-color="#8b5cf6"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="675" fill="url(#g)"/>
+  </svg>
+`);
+
 export function Portfolio({ t, portfolio, onProjectClick }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [touchStart, setTouchStart] = useState(null);
@@ -66,8 +79,8 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                                         >
                                             <div className="h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[var(--bg)] to-[var(--surface-muted)] overflow-hidden relative">
                                                 <img 
-                                                    src={p.img} 
-                                                    alt={`${p.title} - проект веб-разработки от WebNexum`} 
+                                                    src={p.img || placeholderImg} 
+                                                    alt={`${p.title || 'Project'} - проект веб-разработки от WebNexum`} 
                                                     loading="lazy" 
                                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                                 />

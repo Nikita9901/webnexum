@@ -1,5 +1,18 @@
 import React from 'react';
 
+// Fallback placeholder image (SVG gradient) matching Portfolio component
+const placeholderImg = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#0ea5e9"/>
+        <stop offset="1" stop-color="#8b5cf6"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="675" fill="url(#g)"/>
+  </svg>
+`);
+
 export function ProjectModal({ project, onClose, t }) {
     if (!project) return null;
 
@@ -25,8 +38,8 @@ export function ProjectModal({ project, onClose, t }) {
                         </svg>
                     </button>
                     <img 
-                        src={project.img} 
-                        alt={`${project.title} - пример работы веб-студии WebNexum в Минске`} 
+                        src={project.img || placeholderImg} 
+                        alt={`${project.title || 'Project'} - пример работы веб-студии WebNexum в Минске`} 
                         className="w-full h-full object-cover"
                     />
                 </div>

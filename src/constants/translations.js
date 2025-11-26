@@ -106,19 +106,6 @@ export const translations = {
         },
         projects: {
             project1: {
-                title: "Криптоплатформа — Zignaly",
-                desc: "Крипто инвесторская платформа с системой profit sharing.",
-                problem: "Заказчик столкнулся с необходимостью добвления функционала в масштабируемую платформу для криптоинвестиций с автоматическим распределением прибыли между инвесторами и трейдерами. Существующее решение не справлялось с нагрузкой и не имело необходимой функциональности.",
-                whatWeDid: [
-                    "Переработали архитектуру микросервисов для обеспечения масштабируемости",
-                    "Реализовали систему автоматического profit sharing с поддержкой множественных стратегий",
-                    "Создали админ-панель для управления пользователями и стратегиями",
-                    "Интегрировали API криптобирж для автоматической торговли",
-                    "Внедрили систему уведомлений и аналитики в реальном времени",
-                    "Оптимизировали производительность базы данных для обработки больших объемов транзакций"
-                ]
-            },
-            project2: {
                 title: "Страница игры — Vendetta City",
                 desc: "Одностраничный лэндинг для ознакомления с игрой Vendetta City.",
                 problem: "Необходимо было создать привлекательный лэндинг для новой игры, который бы эффективно конвертировал посетителей в игроков. Требовалось показать уникальные особенности игры и создать атмосферу, соответствующую игровому миру.",
@@ -131,6 +118,22 @@ export const translations = {
                     "Оптимизировали производительность для быстрой загрузки"
                 ]
             },
+            project2: {
+                title: "Портал — EduPro",
+                desc: "Обучающий портал с личными кабинетами.",
+                problem: "Онлайн‑школа масштабировалась и столкнулась с разрозненными инструментами: материалы в Google Drive, оплаты через формы, прогресс не фиксируется, нет модерации домашних заданий и отчётности по группам. Требовался единый портал с ролями (админ, преподаватель, куратор, студент), оплатой и доступом к курсам по подписке, трекингом прогресса и сертификатами.",
+                whatWeDid: [
+                    "Спроектировали модель курсов: модули, уроки, домашние задания, дедлайны",
+                    "Реализовали авторизацию, роли и разграничение доступа (RBAC)",
+                    "Собрали личные кабинеты студента/преподавателя/админа с нужными метриками",
+                    "Сделали трекинг прогресса, бэйджи и условные открытия модулей",
+                    "Добавили проверку домашних заданий с комментариями и автопроверками",
+                    "Реализовали выдачу сертификатов с верификацией по уникальному коду",
+                    "Подключили рассылки и пуш‑уведомления (напоминания о дедлайнах)",
+                    "Обеспечили SEO для открытых страниц курсов и блогов, микроразметку",
+                    "Настроили логи, мониторинг и экспорт данных для аналитики"
+                ]
+            },
             project3: {
                 title: "Логистическая система — Buster GFC",
                 desc: "Подсистема управления заказами в автоматизированной логистической системе.",
@@ -141,8 +144,62 @@ export const translations = {
                     "Создали систему отслеживания статусов заказов в реальном времени",
                     "Интегрировали API транспортных компаний для автоматического создания накладных",
                     "Внедрили систему уведомлений для клиентов и сотрудников",
-                    "Разработали аналитическую панель для оптимизации логистических процессов"
+                    "Разработали аналитическую панель для оптимизации логистических процессов",
+                    "Добавили логику отображения курьеров с намерением расширения проекта"
                 ]
+            },
+            project4: {
+                title: "Интернет-магазин — Shoply",
+                desc: "E-commerce платформа с оплатой и каталогом.",
+                problem: "Заказчику требовалось за 6 недель запустить интернет-магазин с каталогом 5 000+ SKU, интеграцией онлайн-оплаты, синхронизацией остатков со складской системой и доставкой. Важно было обеспечить быструю загрузку (Core Web Vitals), SEO-индексацию, промо‑механику (промокоды, скидки), а также безболезненную миграцию товаров из текущих таблиц.",
+                whatWeDid: [
+                    "Сверстали и реализовали витрину на Next.js (SSR/ISR) для SEO и скорости",
+                    "Интегрировали оплату YooKassa и вебхуки",
+                    "Реализовали каталог с фасетными фильтрами и серверным поиском",
+                    "Синхронизировали остатки и цены со складской системой через фоновые задачи",
+                    "Сделали корзину, чекаут, статусы заказов и email-уведомления",
+                    "Добавили промокоды, скидки, ограничение по категориям и датам",
+                    "Оптимизировали изображения (responsive, WebP, lazy) и CWV (LCP/CLS/INP)",
+                    "Настроили аналитики и e‑commerce события (конверсия, воронка, доход)",
+                    "Сделали админ‑панель с ролями: контент-менеджер, маркетолог, админ",
+                    "Настроили CI/CD и алерты по ключевым метрикам (ошибки, скорость, конверсия)"
+                ]
+            },
+            project5: {
+                title: "CRM-система — SalesFlow",
+                desc: "Внутренняя CRM с этапами сделок и аналитикой.",
+                problem: "Отделы продаж вели сделки в разных таблицах и мессенджерах: не было единой воронки, контроль задач и SLA срывался, прогноз по выручке строился вручную и неточно. Требовалась единая CRM с ролями, правами, карточкой клиента, историей коммуникаций и автоматизацией рутины (напоминания, статусы, авто-задачи).",
+                whatWeDid: [
+                    "Спроектировали доменную модель (лиды, сделки, клиенты, задачи, активность)",
+                    "Реализовали ролевую модель (админ, руководитель, менеджер) и разграничение прав",
+                    "Собрали канбан‑воронку с этапами, ограничениями WIP и причинами потерь",
+                    "Сделали карточку клиента с таймлайном писем/звонков/заметок и файлами",
+                    "Настроили интеграции с почтой и телефонией (webhooks, привязка к карточкам)",
+                    "Добавили автоматизации: напоминания, SLA‑таймеры, авто‑назначение задач",
+                    "Подготовили отчёты и дашборды: конверсия, цикл сделки, план/факт, прогноз",
+                    "Обеспечили аудит действий и экспорт данных (CSV) для BI‑систем",
+                    "Организовали CI/CD, журналы ошибок и мониторинг ключевых показателей"
+                ]
+            },
+            project6: {
+                title: "Лендинг — EcoLife",
+                desc: "Маркетинговый лендинг с высокой конверсией.",
+                problem: "Маркетинговая команда запускала сезонную кампанию и столкнулась с низкой конверсией старого лендинга (CVR < 1,2%). Требовалось обновить сторйтеллинг и дизайн, улучшить скорость (LCP < 2,5 c), поднять видимость в поиске, встроить сквозную аналитику и A/B‑тесты, а также организовать быстрые правки контента без участия разработчиков.",
+                whatWeDid: [
+                    "Подготовили структуру страницы и прототипы с упором на ценностные блоки",
+                    "Сделали адаптивный дизайн и микроанимации без потери производительности",
+                    "Реализовали на Vite/React с SSR‑friendly разметкой и чистой семантикой",
+                    "Оптимизировали скорость: критический CSS, картинки WebP/AVIF, lazy/loading",
+                    "Настроили SEO: мета, OpenGraph/Schema.org, sitemap, robots, чистые URL",
+                    "Интегрировали сквозную аналитику (GA4, Yandex Metrica) и события воронки",
+                    "Подключили A/B‑тесты ключевых блоков (заголовки, CTA, оффер, форма)",
+                    "Добавили no‑code правки контента через JSON/Markdown источники",
+                    "Внедрили форму с валидацией, антиспамом и отправкой в CRM",
+                    "Передали гайд по копирайтингу и чек‑лист для будущих кампаний"
+                ]
+            },
+            project7: {
+
             }
         }
     },
@@ -253,19 +310,6 @@ export const translations = {
         },
         projects: {
             project1: {
-                title: "Crypto Platform — Zignaly",
-                desc: "Crypto investment platform with profit sharing system.",
-                problem: "The client needed to add functionality to a scalable crypto investment platform with automatic profit distribution between investors and traders. The existing solution couldn't handle the load and lacked necessary functionality.",
-                whatWeDid: [
-                    "Redesigned microservices architecture for scalability",
-                    "Implemented automatic profit sharing system with support for multiple strategies",
-                    "Created admin panel for managing users and strategies",
-                    "Integrated crypto exchange APIs for automated trading",
-                    "Implemented real-time notifications and analytics system",
-                    "Optimized database performance for processing large transaction volumes"
-                ]
-            },
-            project2: {
                 title: "Game Page — Vendetta City",
                 desc: "Single-page landing for Vendetta City game introduction.",
                 problem: "We needed to create an attractive landing page for a new game that would effectively convert visitors into players. We needed to showcase unique game features and create an atmosphere matching the game world.",
@@ -278,6 +322,23 @@ export const translations = {
                     "Optimized performance for fast loading"
                 ]
             },
+            project2: {
+                title: "Portal — EduPro",
+                desc: "Learning portal with personal accounts.",
+                problem: "An online school was scaling and used fragmented tools: materials in Google Drive, payments via forms, no progress tracking, no homework moderation and no group reporting. They needed a single portal with roles (admin, teacher, curator, student), payments and subscription access to courses, progress tracking and certificates.",
+                whatWeDid: [
+                    "Designed course model: modules, lessons, homework, deadlines",
+                    "Implemented authentication, roles and access control (RBAC)",
+                    "Built dashboards for student/teacher/admin with key metrics",
+                    "Added progress tracking, badges and conditional module unlocks",
+                    "Implemented homework review with comments and auto‑checks",
+                    "Integrated Stripe payments with subscription/one‑time models",
+                    "Issued certificates with verification via unique code",
+                    "Hooked email/push notifications (deadline reminders)",
+                    "Optimized SEO for public course/blog pages with rich snippets",
+                    "Set up logging, monitoring and data export for analytics"
+                ]
+            },
             project3: {
                 title: "Logistics System — Buster GFC",
                 desc: "Order management subsystem in automated logistics system.",
@@ -288,8 +349,62 @@ export const translations = {
                     "Created real-time order status tracking system",
                     "Integrated shipping company APIs for automatic waybill creation",
                     "Implemented notification system for clients and employees",
-                    "Developed analytics dashboard for optimizing logistics processes"
+                    "Developed analytics dashboard for optimizing logistics processes",
+                    "We've added logic for displaying couriers with the intention of expanding the project."
                 ]
+            },
+            project4: {
+                title: "E-commerce — Shoply",
+                desc: "E-commerce platform with checkout and catalog.",
+                problem: "The client needed to launch an online store in 6 weeks with a catalog of 5,000+ SKUs, online payments, inventory sync with the warehouse system, and delivery options. It had to be fast (Core Web Vitals), SEO‑friendly, support promotions (promo codes, discounts), and include a smooth migration from existing spreadsheets.",
+                whatWeDid: [
+                    "Built storefront on Next.js (SSR/ISR) for SEO and speed",
+                    "Integrated Stripe payments (cards, Apple Pay/Google Pay) and webhooks",
+                    "Implemented catalog with faceted filters and server‑side search",
+                    "Synced stock and prices with WMS via background jobs",
+                    "Delivered cart, checkout, order statuses and email notifications",
+                    "Added promo codes, discounts, category/date restrictions",
+                    "Optimized images (responsive, WebP) and CWV (LCP/CLS/INP)",
+                    "Configured analytics and e‑commerce events (conversion, funnel, revenue)",
+                    "Built admin panel with roles: content manager, marketer, admin",
+                    "Set up CI/CD and alerts for key metrics (errors, speed, conversion)"
+                ]
+            },
+            project5: {
+                title: "CRM — SalesFlow",
+                desc: "Internal CRM with pipeline and analytics.",
+                problem: "Sales teams were tracking deals across multiple spreadsheets and messengers: no single pipeline, missed task control and SLAs, revenue forecasts were manual and inaccurate. A unified CRM was required with roles, permissions, customer cards, communication history, and routine automation (reminders, statuses, auto‑tasks).",
+                whatWeDid: [
+                    "Designed domain model (leads, deals, accounts, tasks, activities)",
+                    "Implemented RBAC (admin, head, manager) with fine‑grained permissions",
+                    "Built Kanban pipeline with stages, WIP limits and loss reasons",
+                    "Created customer card with timeline of emails/calls/notes and attachments",
+                    "Integrated email and telephony (webhooks, auto‑linking to entities)",
+                    "Automations: reminders, SLA timers, auto task assignment",
+                    "Prepared reports and dashboards: conversion, sales cycle, plan vs fact, forecast",
+                    "Provided audit trail and data export (CSV) for BI tools",
+                    "Set up CI/CD, error logging and monitoring of key metrics"
+                ]
+            },
+            project6: {
+                title: "Landing page — EcoLife",
+                desc: "Marketing landing page optimized for conversions.",
+                problem: "The marketing team was launching a seasonal campaign and faced low conversion on the old landing (CVR < 1.2%). They needed revamped storytelling and design, improved speed (LCP < 2.5s), better search visibility, end‑to‑end analytics and A/B testing, and the ability to update content quickly without developers.",
+                whatWeDid: [
+                    "Defined page IA and wireframes focused on value propositions",
+                    "Built responsive design and micro‑animations without hurting performance",
+                    "Implemented with Vite/React using clean semantics and SSR‑friendly markup",
+                    "Improved performance: critical CSS, WebP/AVIF images, lazy/loading hints",
+                    "Set up SEO: meta, OpenGraph/Schema.org, sitemap, robots, clean URLs",
+                    "Integrated end‑to‑end analytics (GA4, Yandex Metrica) and funnel events",
+                    "Configured A/B tests for key blocks (headlines, CTAs, offer, form)",
+                    "Enabled no‑code content updates via JSON/Markdown sources",
+                    "Added form validation, anti‑spam and CRM handoff",
+                    "Delivered copy guidelines and a checklist for future campaigns"
+                ]
+            },
+            project7: {
+
             }
         }
     }
