@@ -1,10 +1,10 @@
 import React, {useState, useRef, useEffect, useMemo} from "react";
-import project1Img from "./assets/project1.png";
-import project2Img from "./assets/project2.png";
-import project3Img from "./assets/project3.png";
-import project4Img from "./assets/project4.png";
-import project5Img from "./assets/project5.png";
-import project6Img from "./assets/project6.png";
+import project1Img from "./assets/project1.webp";
+import project2Img from "./assets/project2.webp";
+import project3Img from "./assets/project3.webp";
+import project4Img from "./assets/project4.webp";
+import project5Img from "./assets/project5.webp";
+import project6Img from "./assets/project6.webp";
 import {FAQ} from "./atoms.jsx";
 import { useLanguage } from "./hooks/useLanguage";
 import { Header } from "./components/Header";
