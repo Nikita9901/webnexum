@@ -128,21 +128,43 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
                     </div>
                 </div>
 
-                        {/* Dot Indicators */}
-                        <div className="flex justify-center gap-1.5 md:gap-2 mt-4 md:mt-6">
-                            {portfolio.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setCurrentIndex(index)}
-                                    className={`carousel-dot h-1.5 md:h-2 rounded-full transition-all ${
-                                        index === currentIndex 
-                                            ? 'w-4 md:w-8 bg-[var(--accent)]' 
-                                            : 'w-1.5 md:w-2 bg-[var(--muted)] opacity-50 hover:opacity-75'
-                                    }`}
-                                    aria-label={`Go to project ${index + 1}`}
-                                />
-                            ))}
-                        </div>
+                {/* Mobile navigation buttons (visible only on mobile) */}
+                <div className="md:hidden flex justify-center gap-3 mt-3">
+                    <button
+                        onClick={() => setCurrentIndex((prev) => (prev === 0 ? portfolio.length - 1 : prev - 1))}
+                        className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white shadow-lg hover:shadow-xl hover:brightness-110 active:scale-95 transition shadow-[0_15px_30px_var(--button-primary-shadow)]"
+                        aria-label="Previous project"
+                    >
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button
+                        onClick={() => setCurrentIndex((prev) => (prev === portfolio.length - 1 ? 0 : prev + 1))}
+                        className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-white shadow-lg hover:shadow-xl hover:brightness-110 active:scale-95 transition shadow-[0_15px_30px_var(--button-primary-shadow)]"
+                        aria-label="Next project"
+                    >
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Dot Indicators */}
+                <div className="flex justify-center gap-1.5 md:gap-2 mt-4 md:mt-6">
+                    {portfolio.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentIndex(index)}
+                            className={`carousel-dot h-1.5 md:h-2 rounded-full transition-all ${
+                                index === currentIndex 
+                                    ? 'w-4 md:w-8 bg-[var(--accent)]' 
+                                    : 'w-1.5 md:w-2 bg-[var(--muted)] opacity-50 hover:opacity-75'
+                            }`}
+                            aria-label={`Go to project ${index + 1}`}
+                        />
+                    ))}
+                </div>
             </div>
         </section>
     );
