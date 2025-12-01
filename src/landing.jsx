@@ -64,50 +64,12 @@ export default function WebNexumLanding() {
         localStorage.setItem('wn-theme', theme);
     }, [theme]);
 
-    // Обновление lang атрибута и meta тегов для SEO
+    // Обновление lang атрибута для SEO
     useEffect(() => {
-        if (typeof document === 'undefined') return;
-        document.documentElement.lang = language;
-        
-        // Обновляем title
-        document.title = t.seo.title;
-        
-        // Обновляем meta description
-        let metaDescription = document.querySelector('meta[name="description"]');
-        if (!metaDescription) {
-            metaDescription = document.createElement('meta');
-            metaDescription.setAttribute('name', 'description');
-            document.head.appendChild(metaDescription);
+        if (typeof document !== 'undefined') {
+            document.documentElement.lang = language;
         }
-        metaDescription.setAttribute('content', t.seo.description);
-        
-        // Обновляем og:title
-        let ogTitle = document.querySelector('meta[property="og:title"]');
-        if (!ogTitle) {
-            ogTitle = document.createElement('meta');
-            ogTitle.setAttribute('property', 'og:title');
-            document.head.appendChild(ogTitle);
-        }
-        ogTitle.setAttribute('content', t.seo.title);
-        
-        // Обновляем og:description
-        let ogDescription = document.querySelector('meta[property="og:description"]');
-        if (!ogDescription) {
-            ogDescription = document.createElement('meta');
-            ogDescription.setAttribute('property', 'og:description');
-            document.head.appendChild(ogDescription);
-        }
-        ogDescription.setAttribute('content', t.seo.description);
-        
-        // Обновляем og:locale в зависимости от языка
-        let ogLocale = document.querySelector('meta[property="og:locale"]');
-        if (!ogLocale) {
-            ogLocale = document.createElement('meta');
-            ogLocale.setAttribute('property', 'og:locale');
-            document.head.appendChild(ogLocale);
-        }
-        ogLocale.setAttribute('content', language === 'ru' ? 'ru_RU' : 'en_US');
-    }, [language, t]);
+    }, [language]);
 
     function showToast(text, type = 'success') {
         setToast(text);
@@ -365,6 +327,13 @@ export default function WebNexumLanding() {
 
     return (
         <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+            {/* SEO Meta Tags using React 19's built-in support */}
+            <title>{t.seo.title}</title>
+            <meta name="description" content={t.seo.description} />
+            <meta property="og:title" content={t.seo.title} />
+            <meta property="og:description" content={t.seo.description} />
+            <meta property="og:locale" content={language === 'ru' ? 'ru_RU' : 'en_US'} />
+
             <Toast 
                 toast={toast} 
                 toastType={toastType} 
@@ -392,181 +361,6 @@ export default function WebNexumLanding() {
             <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} t={t} />
 
             <BackToTop show={showBackToTop} onClick={scrollToTop} />
-
-            {/* Структурированные данные для SEO */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "WebSite",
-                        "name": "WebNexum",
-                        "alternateName": ["Веб-студия WebNexum", "WebNexum Web Studio"],
-                        "url": "https://webnexum.com",
-                        "description": t.seo.description,
-                        "inLanguage": ["ru", "en"],
-                        "potentialAction": {
-                            "@type": "SearchAction",
-                            "target": "https://webnexum.com/?s={search_term_string}",
-                            "query-input": "required name=search_term_string"
-                        }
-                    })
-                }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Service",
-                        "serviceType": "Веб-разработка",
-                        "inLanguage": ["ru", "en"],
-                        "provider": {
-                            "@type": "LocalBusiness",
-                            "name": "WebNexum",
-                            "alternateName": ["Веб-студия WebNexum", "WebNexum Web Studio"],
-                            "address": {
-                                "@type": "PostalAddress",
-                                "addressLocality": "Минск",
-                                "addressCountry": "BY"
-                            }
-                        },
-                        "areaServed": {
-                            "@type": "Country",
-                            "name": "Беларусь"
-                        },
-                        "hasOfferCatalog": {
-                            "@type": "OfferCatalog",
-                            "name": "Услуги веб-разработки",
-                            "itemListElement": [
-                                {
-                                    "@type": "Offer",
-                                    "itemOffered": {
-                                        "@type": "Service",
-                                        "name": "Разработка сайтов",
-                                        "description": "Создание лендингов, корпоративных сайтов, интернет-магазинов"
-                                    }
-                                },
-                                {
-                                    "@type": "Offer",
-                                    "itemOffered": {
-                                        "@type": "Service",
-                                        "name": "Разработка веб-приложений",
-                                        "description": "Создание SaaS-платформ, панелей управления, кастомных решений"
-                                    }
-                                },
-                                {
-                                    "@type": "Offer",
-                                    "itemOffered": {
-                                        "@type": "Service",
-                                        "name": "Мобильные решения",
-                                        "description": "PWA разработка, интеграции, адаптивная верстка"
-                                    }
-                                },
-                                {
-                                    "@type": "Offer",
-                                    "itemOffered": {
-                                        "@type": "Service",
-                                        "name": "Дизайн и бренд",
-                                        "description": "UI/UX дизайн, прототипирование, разработка айдентики"
-                                    }
-                                }
-                            ]
-                        }
-                    })
-                }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "FAQPage",
-                        "mainEntity": [
-                            {
-                                "@type": "Question",
-                                "name": "Что входит в создание сайта?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Разработка дизайна, верстка, React-приложение, серверная часть, админка, SEO-настройка и публикация. Полный цикл от идеи до запуска."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Сколько длится разработка?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "От 5–7 дней для простых сайтов до 8-9 недель для полноценных проектов с функционалом. Точные сроки определяются после анализа требований."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Как формируется стоимость проекта?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Стоимость зависит от объема работ, сложности функционала и сроков. После обсуждения требований мы предоставляем детальную оценку. Работаем с фиксированной стоимостью по договору."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Какие технологии вы используете?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Основной стек: React, Node.js, TypeScript, PostgreSQL/MongoDB. Также работаем с Next.js, Express, Django, Flask. Выбираем технологии под конкретную задачу."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Даете ли вы поддержку?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Да, предоставляем техподдержку, обновления и сопровождение проекта. Включаем 3 месяца бесплатной поддержки после запуска, далее — по договоренности."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Можно ли доработать существующий проект?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Конечно. Работаем с проектами на любых технологиях. Можем добавить функционал, переработать дизайн, оптимизировать производительность или мигрировать на современный стек."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Как проходит процесс работы?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Обсуждение требований → Техническое задание → Дизайн и прототипы → Разработка с регулярными демо → Тестирование → Запуск. Работаем по Agile с прозрачной коммуникацией."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Какие гарантии вы предоставляете?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Гарантируем соответствие техническому заданию, исправление багов в течение гарантийного периода, передачу исходного кода и документации. Все фиксируется в договоре."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Как происходит оплата?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Обычно работаем по схеме: 30% предоплата, 40% по готовности основной части, 30% после запуска. Возможны индивидуальные условия для крупных проектов."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                "name": "Работаете ли вы с зарубежными клиентами?",
-                                "acceptedAnswer": {
-                                    "@type": "Answer",
-                                    "text": "Да, работаем удаленно с клиентами по всему миру. Используем современные инструменты для коммуникации и управления проектами. Гибкий график работы."
-                                }
-                            }
-                        ]
-                    })
-                }}
-            />
         </div>
     );
 }

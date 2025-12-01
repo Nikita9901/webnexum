@@ -11,11 +11,6 @@ export function Process({ t, language, sectionRefs }) {
             <h2 key={`process-title-${language}`} className="text-2xl font-semibold animate-on-scroll">{t.process.title}</h2>
             <p key={`process-desc-${language}`} className="text-[var(--muted)] mt-2 max-w-prose animate-on-scroll" style={{ transitionDelay: '0.1s' }}>{t.process.description}</p>
             
-            {/* Скрытый SEO текст для процесса работы */}
-            <div className="sr-only">
-                <p>Процесс разработки сайта в веб-студии WebNexum включает пять основных этапов: обсуждение и анализ требований, прототипирование и дизайн, разработка по Agile методологии, тестирование и запуск, поддержка и развитие проекта. Мы работаем прозрачно, с регулярными демо и отчетами для клиента. Каждый этап согласовывается перед переходом к следующему.</p>
-            </div>
-
             <div className="mt-6 relative">
                 {/* Timeline line for desktop */}
                 <div className="hidden md:block absolute left-6 top-7 bottom-12 w-0.5 bg-gradient-to-b from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)]"></div>
@@ -64,4 +59,3 @@ export function Process({ t, language, sectionRefs }) {
         </section>
     );
 }
-

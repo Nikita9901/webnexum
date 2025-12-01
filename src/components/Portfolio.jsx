@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { smoothScrollTo } from '../utils/smoothScroll';
 
 // Fallback placeholder image (SVG gradient) for projects without images
 const placeholderImg = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
@@ -49,11 +48,6 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
             <h2 className="text-2xl font-semibold">{t.portfolio.title}</h2>
             <p className="text-[var(--muted)] mt-2">{t.portfolio.description}</p>
             
-            {/* Скрытый SEO текст для портфолио */}
-            <div className="sr-only">
-                <p>Портфолио веб-студии WebNexum включает примеры успешно реализованных проектов: корпоративные сайты, лендинги, интернет-магазины, веб-приложения и SaaS-платформы. Каждый проект в портфолио демонстрирует наш подход к решению бизнес-задач клиентов через веб-технологии. Мы работаем с различными отраслями: e-commerce, образование, медицина, финансы, технологии. Разработка сайта под ключ с учетом специфики бизнеса клиента.</p>
-            </div>
-
             <div className="mt-6 relative">
                 <div className="flex justify-center">
                     {/* Carousel Container */}
@@ -169,4 +163,3 @@ export function Portfolio({ t, portfolio, onProjectClick }) {
         </section>
     );
 }
-

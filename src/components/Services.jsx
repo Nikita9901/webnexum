@@ -13,11 +13,6 @@ export function Services({ t, language, servicesList, sectionRefs }) {
                 {t.services.description}
             </p>
 
-            {/* Скрытый SEO текст для услуг */}
-            <div className="sr-only">
-                <p>Веб-студия WebNexum в Минске предлагает полный спектр услуг по разработке сайтов и веб-приложений. Разработка сайта под ключ включает создание лендингов, корпоративных сайтов, интернет-магазинов. Разработка веб-приложений включает создание SaaS-платформ, панелей управления и кастомных решений. Мобильные решения: PWA разработка, интеграции, адаптивная верстка. Дизайн и бренд: UI/UX дизайн, прототипирование, разработка айдентики.</p>
-            </div>
-
             <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {servicesList.map((s, index) => (
                     <div 
@@ -55,4 +50,3 @@ export function Services({ t, language, servicesList, sectionRefs }) {
         </section>
     );
 }
-

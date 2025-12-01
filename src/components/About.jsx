@@ -5,14 +5,8 @@ export function About({ t, theme = 'light' }) {
     return (
         <section id="about" className="mt-20">
             <div className="grid md:grid-cols-2 gap-8 items-start">
-                {/* Почему выбирают нас */}
                 <div>
                     <h2 className="text-2xl font-semibold mb-6">{t.about.why}</h2>
-                    
-                    {/* Скрытый SEO текст */}
-                    <div className="sr-only">
-                        <p>Веб-студия WebNexum в Минске — это опытная команда senior и middle разработчиков с опытом реализации enterprise задач. Мы предлагаем прозрачные процессы разработки с гибким подходом (Agile), регулярными демо и отчетами. После релиза обеспечиваем техническую поддержку и сопровождение проекта. Разработка сайта под ключ с гарантией качества и соблюдением сроков.</p>
-                    </div>
                     
                     <div className="space-y-4">
                         <div className="p-5 bg-[var(--card)] rounded-lg shadow-sm hover:shadow-md transition-all card-hover border-l-4 border-[var(--accent)]">
@@ -66,4 +60,3 @@ export function About({ t, theme = 'light' }) {
         </section>
     );
 }
-

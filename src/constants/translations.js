@@ -8,13 +8,13 @@ export const translations = {
             contact: "Оставить заявку"
         },
         seo: {
-            title: "Разработка сайтов в Минске под ключ | WebNexum — веб-студия",
-            description: "Разработка сайтов в Минске под ключ. Создание веб-приложений, корпоративных сайтов, лендингов и интернет-магазинов. Профессиональная веб-разработка с гарантией качества. WebNexum — ваша веб-студия в Минске."
+            title: "Разработка сайтов под ключ | Веб-студия WebNexum",
+            description: "Разработка сайтов под ключ. Создание веб-приложений, корпоративных сайтов, лендингов и интернет-магазинов. Профессиональная веб-разработка с гарантией качества."
         },
         hero: {
             title: "Разработка сайтов",
-            titleSuffix: "в Минске под ключ",
-            description: "WebNexum — веб-студия в Минске. Разрабатываем сайты под ключ, веб-приложения и корпоративные решения. От идеи до поддержки.",
+            titleSuffix: "под ключ",
+            description: "Веб-студия WebNexum. Разрабатываем сайты под ключ, веб-приложения и корпоративные решения. От идеи до поддержки.",
             cta: "Оставить заявку",
             portfolio: "Посмотреть портфолио"
         },
@@ -55,7 +55,7 @@ export const translations = {
             process: { title: "Прозрачные процессы", desc: "Гибкий подход (Agile) с регулярными демо и отчетами" },
             support: { title: "Поддержка", desc: "Сопровождение и техподдержка после релиза" },
             aboutTitle: "О нас",
-            aboutText: "WebNexum — веб-студия в Минске. Разрабатываем сайты под ключ и веб-приложения. Работаем с компаниями, которые ценят скорость, качество и результат.",
+            aboutText: "Веб-студия WebNexum. Разрабатываем сайты под ключ и веб-приложения. Работаем с компаниями, которые ценят скорость, качество и результат.",
             contact: "Связаться",
             cases: "Кейсы"
         },
@@ -65,7 +65,7 @@ export const translations = {
             email: "Email",
             telegram: "Telegram",
             address: "Адрес",
-            addressValue: "Remote / Минск",
+            addressValue: "Remote",
             name: "Имя",
             namePlaceholder: "Ваше имя",
             phone: "Телефон",
@@ -212,13 +212,13 @@ export const translations = {
             contact: "Contact Us"
         },
         seo: {
-            title: "Website Development in Minsk Turnkey | WebNexum — Web Studio",
-            description: "Website development in Minsk turnkey. Creating web applications, corporate websites, landing pages and online stores. Professional web development with quality guarantee. WebNexum — your web studio in Minsk."
+            title: "Turnkey Website Development | WebNexum — Web Studio",
+            description: "Turnkey website development. Creating web applications, corporate websites, landing pages and online stores. Professional web development with quality guarantee."
         },
         hero: {
             title: "Website Development",
-            titleSuffix: "in Minsk Turnkey",
-            description: "WebNexum — web studio in Minsk. We develop turnkey websites, web applications and corporate solutions. From idea to support.",
+            titleSuffix: "Turnkey",
+            description: "WebNexum — web studio. We develop turnkey websites, web applications and corporate solutions. From idea to support.",
             cta: "Get Started",
             portfolio: "View Portfolio"
         },
@@ -259,7 +259,7 @@ export const translations = {
             process: { title: "Transparent Processes", desc: "Flexible approach (Agile) with regular demos and reports" },
             support: { title: "Support", desc: "Maintenance and technical support after release" },
             aboutTitle: "About Us",
-            aboutText: "WebNexum — web studio in Minsk. We develop turnkey websites and web applications. We work with companies that value speed, quality and results.",
+            aboutText: "WebNexum — web studio. We develop turnkey websites and web applications. We work with companies that value speed, quality and results.",
             contact: "Contact",
             cases: "Cases"
         },
@@ -269,7 +269,7 @@ export const translations = {
             email: "Email",
             telegram: "Telegram",
             address: "Address",
-            addressValue: "Remote / Minsk",
+            addressValue: "Remote",
             name: "Name",
             namePlaceholder: "Your name",
             phone: "Phone",
@@ -409,5 +409,3 @@ export const translations = {
         }
     }
 };
-
-
